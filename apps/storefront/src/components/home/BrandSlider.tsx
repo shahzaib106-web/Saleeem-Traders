@@ -1,2 +1,0 @@
-import { brands } from "@/data/catalog";
-export function BrandSlider() { return <section className="section"><div className="container"><div className="section-head"><div><h2>Authorized brands</h2><p>Source trusted local and international brands through one reliable partner.</p></div></div><div className="brand-strip">{brands.map(b => <div className="card brand-card" key={b.slug}>{b.name}</div>)}</div></div></section>; }

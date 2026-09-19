@@ -1,15 +1,57 @@
 import Link from "next/link";
+import { IconFacebook, IconInstagram, IconYoutube, LogoMark } from "@/components/ui/icons";
 
 export function Footer() {
   return (
-    <footer className="footer">
-      <div className="container footer__grid">
-        <div><div className="brand">SALEEM TRADERS</div><p>Tiles, sanitaryware, kitchen and bathroom accessories for better spaces.</p></div>
-        <div><h3>Shop</h3><Link href="/category/tiles">Tiles</Link><Link href="/category/sanitaryware">Sanitaryware</Link><Link href="/category/kitchen">Kitchen</Link><Link href="/category/accessories">Accessories</Link><Link href="/brands">Brands</Link><Link href="/projects">Projects</Link></div>
-        <div><h3>Help</h3><Link href="/account/orders">Track your order</Link><Link href="/contact">Returns & exchanges</Link><Link href="/contact">FAQs</Link><Link href="/quote">Request a quote</Link><Link href="/contact">Contact us</Link></div>
-        <div><h3>Visit our showroom</h3><p>📍 Main University Road,<br />Gulshan-e-Iqbal, Karachi, Pakistan</p><p>Mon – Sat: 10:00 AM – 8:00 PM<br />Sun: 11:00 AM – 6:00 PM</p><Link className="button secondary" href="/contact">Get directions →</Link></div>
+    <footer className="site-footer">
+      <div className="container">
+        <div className="site-footer__grid">
+          <div className="site-footer__brand">
+            <Link className="brand-logo" href="/" aria-label="Saleem Traders — home">
+              <LogoMark />
+              <span className="brand-logo__text">
+                SALEEM
+                <br />
+                TRADERS
+              </span>
+            </Link>
+            <p>Tiles, fittings &amp; finishes for every space.</p>
+          </div>
+
+          <nav className="site-footer__col" aria-label="Categories">
+            <Link href="/category/tiles">Tiles</Link>
+            <Link href="/category/sanitaryware">Sanitaryware</Link>
+            <Link href="/category/kitchen">Kitchen</Link>
+            <Link href="/category/accessories">Accessories</Link>
+          </nav>
+
+          <nav className="site-footer__col" aria-label="Store">
+            <Link href="/products">Shop</Link>
+            <Link href="/projects">Inspiration</Link>
+            <Link href="/quote">Request a quote</Link>
+          </nav>
+
+          <div className="site-footer__social">
+            <Link href="https://facebook.com" aria-label="Saleem Traders on Facebook">
+              <IconFacebook />
+            </Link>
+            <Link href="https://instagram.com" aria-label="Saleem Traders on Instagram">
+              <IconInstagram />
+            </Link>
+            <Link href="https://youtube.com" aria-label="Saleem Traders on YouTube">
+              <IconYoutube />
+            </Link>
+          </div>
+        </div>
+
+        <div className="site-footer__bottom">
+          <span>© 2026 Saleem Traders. All rights reserved.</span>
+          <span>
+            <Link href="/privacy-policy">Privacy Policy</Link>
+            <Link href="/terms">Terms &amp; Conditions</Link>
+          </span>
+        </div>
       </div>
-      <div className="container footer-bottom"><span>© 2026 Saleem Traders. All rights reserved.</span><span>Privacy Policy &nbsp; | &nbsp; Terms & Conditions &nbsp; | &nbsp; Contact Us</span></div>
     </footer>
   );
 }

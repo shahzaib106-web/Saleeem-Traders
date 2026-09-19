@@ -1,28 +1,80 @@
-import Link from "next/link";
+"use client";
 
-function LogoMark() {
-  return (
-    <svg viewBox="0 0 64 64" aria-hidden="true">
-      <path d="M7 30 32 8l25 22v5L32 15 7 35z" fill="#ad8029" />
-      <path d="M14 32h13v22H14zM37 32h13v22H37zM29 32h6v22h-6z" fill="#0b3042" />
-      <path d="M17 36h7v7h-7zM40 36h7v7h-7z" fill="#f3efe8" />
-      <path d="M17 45h7v7h-7zM40 45h7v7h-7z" fill="#f3efe8" />
-    </svg>
-  );
-}
+import Link from "next/link";
+import { useState } from "react";
+import { Arrow, IconBag, IconClose, IconMenu, IconSearch, LogoMark } from "@/components/ui/icons";
+
+const primaryLinks = [
+  { label: "Tiles", href: "/category/tiles" },
+  { label: "Sanitaryware", href: "/category/sanitaryware" },
+  { label: "Kitchen", href: "/category/kitchen" },
+  { label: "Accessories", href: "/category/accessories" }
+];
+
+const mobileLinks = [
+  ...primaryLinks,
+  { label: "All products", href: "/products" },
+  { label: "Brands", href: "/brands" },
+  { label: "Inspiration", href: "/projects" },
+  { label: "Contact", href: "/contact" }
+];
 
 export function Header() {
+  const [open, setOpen] = useState(false);
+
   return (
-    <>
-      <div className="topbar"><div className="container topbar__inner"><span>Tiles, fittings & finishes for every space</span><span>Karachi&nbsp;&nbsp; | &nbsp;&nbsp;Lahore&nbsp;&nbsp; | &nbsp;&nbsp;Islamabad</span></div></div>
-      <header className="header">
-        <div className="container header__inner">
-          <Link className="logo" href="/"><span className="logo-mark"><LogoMark /></span><span className="logo-text">SALEEM<br />TRADERS</span></Link>
-          <form className="search" action="/search"><input name="q" placeholder="Search for tiles, sanitaryware, kitchen products..." /><button type="submit">Search</button></form>
-          <div className="header-actions"><Link className="icon-link" href="/account"><span className="icon">♡</span> Wishlist</Link><Link className="icon-link" href="/cart"><span className="icon">🛒</span><span className="bubble">3</span> Cart</Link></div>
+    <header className="site-header">
+      <div className="container site-header__inner">
+        <Link className="brand-logo" href="/" aria-label="Saleem Traders — home">
+          <LogoMark />
+          <span className="brand-logo__text">
+            SALEEM
+            <br />
+            TRADERS
+          </span>
+        </Link>
+
+        <nav className="site-header__nav" aria-label="Primary">
+          {primaryLinks.map((link) => (
+            <Link key={link.href} href={link.href}>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="site-header__actions">
+          <Link className="icon-btn" href="/search" aria-label="Search products">
+            <IconSearch />
+          </Link>
+          <Link className="icon-btn" href="/cart" aria-label="Cart">
+            <IconBag />
+            <span className="icon-btn__count">3</span>
+          </Link>
+          <Link className="btn btn--navy site-header__cta" href="/quote">
+            Request a quote <Arrow />
+          </Link>
+          <button
+            type="button"
+            className="icon-btn site-header__menu"
+            aria-expanded={open}
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <IconClose /> : <IconMenu />}
+          </button>
         </div>
-        <nav className="nav"><div className="container nav__inner"><Link href="/category/tiles">Tiles</Link><Link href="/category/sanitaryware">Sanitaryware</Link><Link href="/category/kitchen">Kitchen</Link><Link href="/category/accessories">Accessories</Link><Link href="/brands">Brands</Link><Link href="/projects">Projects</Link><Link className="quote-link" href="/quote">Request a quote</Link></div></nav>
-      </header>
-    </>
+      </div>
+
+      <div className={`container site-header__mobile${open ? " open" : ""}`}>
+        {mobileLinks.map((link) => (
+          <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
+            {link.label}
+          </Link>
+        ))}
+        <Link className="btn btn--navy" href="/quote" onClick={() => setOpen(false)}>
+          Request a quote <Arrow />
+        </Link>
+      </div>
+    </header>
   );
 }

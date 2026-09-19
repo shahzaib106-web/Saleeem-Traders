@@ -1,4 +1,43 @@
 import Link from "next/link";
 import { products } from "@/data/catalog";
-import { ProductGrid } from "@/components/products/ProductGrid";
-export function FeaturedProducts() { return <section className="section"><div className="container"><div className="section-head"><div><h2>Featured products</h2><p>Popular picks for quality-conscious homeowners, architects and contractors.</p></div><Link className="button secondary" href="/products">View catalog</Link></div><ProductGrid products={products.slice(0, 6)} /></div></section>; }
+import { Arrow } from "@/components/ui/icons";
+
+const picks = [
+  { slug: "carrara-white-tile", meta: "Porcelain • Marble effect", image: "/images/demo/product-carrara.jpg" },
+  { slug: "wall-hung-commode", meta: "Ceramic • White", image: "/images/demo/product-commode.jpg" },
+  { slug: "kitchen-mixer-tap", meta: "Brushed finish", image: "/images/demo/product-tap.jpg" },
+  { slug: "rain-shower-set", meta: "Wall mounted", image: "/images/demo/product-shower.jpg" }
+];
+
+export function FeaturedProducts() {
+  return (
+    <section className="home-section" style={{ paddingTop: 8 }}>
+      <div className="container">
+        <div className="home-head home-head--row">
+          <h2>Made for everyday living.</h2>
+          <Link className="link-u" href="/products">
+            Explore products <Arrow />
+          </Link>
+        </div>
+        <div className="pcard-grid">
+          {picks.map((pick) => {
+            const product = products.find((p) => p.slug === pick.slug);
+            if (!product) return null;
+            return (
+              <Link className="pcard" key={product.slug} href={`/products/${product.slug}`}>
+                <div className="pcard__media">
+                  <img src={pick.image} alt={product.name} loading="lazy" />
+                </div>
+                <h3>{product.name}</h3>
+                <p>{pick.meta}</p>
+                <span className="link-u">
+                  Request price <Arrow />
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}

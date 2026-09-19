@@ -1,2 +1,30 @@
 import Link from "next/link";
-export function HeroSection() { return <section className="hero"><div className="container hero__inner"><div><span className="badge">Trusted supplier for homes, contractors and projects</span><h1>Build better spaces with Saleeem Traders.</h1><p>Shop curated sanitary ware, tiles, electrical, plumbing, paints and hardware with dependable stock, expert guidance and fast quotation support.</p><div className="hero__actions"><Link className="button" href="/products">Shop catalog</Link><Link className="button secondary" href="/quote">Request project quote</Link></div><div className="stats"><div className="stat"><strong>5k+</strong>SKUs</div><div className="stat"><strong>120+</strong>Brands</div><div className="stat"><strong>24h</strong>Quote turnaround</div></div></div><div className="hero-card"><div className="hero-grid"><div className="hero-tile"><span>🚿</span><strong>Sanitary</strong><small>Modern bath solutions</small></div><div className="hero-tile"><span>▦</span><strong>Tiles</strong><small>Premium flooring</small></div><div className="hero-tile"><span>⚡</span><strong>Electrical</strong><small>Safe installations</small></div><div className="hero-tile"><span>🛠️</span><strong>Hardware</strong><small>Site-ready tools</small></div></div></div></div></section>; }
+import { Arrow } from "@/components/ui/icons";
+
+export function HeroSection() {
+  return (
+    <section className="home-hero">
+      <div className="home-hero__media">
+        <img src="/images/demo/hero-bath.jpg" alt="Sunlit bathroom with a freestanding tub, stone tiles and bronze fittings" />
+      </div>
+      <div className="home-hero__shade" aria-hidden="true" />
+      <div className="container home-hero__inner">
+        <p className="eyebrow">Premium surfaces for modern living</p>
+        <h1>
+          Better spaces
+          <br />
+          start here.
+        </h1>
+        <p>Tiles, sanitaryware and fittings, thoughtfully selected for your home.</p>
+        <div className="home-hero__actions">
+          <Link className="btn btn--cream" href="/products">
+            Explore collections <Arrow />
+          </Link>
+          <Link className="hero-link" href="/contact">
+            Visit our showroom <Arrow />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
