@@ -1,0 +1,1 @@
+export default function PrivacyPage() { return <section className="section"><div className="container panel"><h1>Privacy Policy</h1><p className="muted">We only collect information required to process orders, quotations and support requests.</p></div></section>; }

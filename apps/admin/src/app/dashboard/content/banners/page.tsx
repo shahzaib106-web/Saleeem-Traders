@@ -1,0 +1,1 @@
+export default function Page(){return <div className="card"><h1>content banners</h1><p className="muted">Manage content banners from this workspace.</p><table><tbody><tr><th>Name</th><th>Status</th><th>Action</th></tr><tr><td>Sample record</td><td>Active</td><td><button className="button">Edit</button></td></tr></tbody></table></div>}

@@ -1,0 +1,1 @@
+export function CartItem({ name, price }: { name: string; price: string }) { return <div className="panel" style={{boxShadow:"none"}}><strong>{name}</strong><p className="muted">Qty 1 · {price}</p></div>; }

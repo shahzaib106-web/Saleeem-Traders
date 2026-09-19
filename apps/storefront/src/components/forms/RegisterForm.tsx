@@ -1,0 +1,1 @@
+export function RegisterForm() { return <form className="form"><input className="input" placeholder="Full name"/><input className="input" type="email" placeholder="Email"/><input className="input" type="password" placeholder="Password"/><button className="button">Create account</button></form>; }

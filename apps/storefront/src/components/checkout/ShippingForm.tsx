@@ -1,0 +1,1 @@
+export function ShippingForm() { return <form className="form"><input className="input" placeholder="Full name"/><input className="input" placeholder="Phone"/><input className="input" placeholder="Address"/><select><option>Lahore</option><option>Karachi</option><option>Islamabad</option></select></form>; }

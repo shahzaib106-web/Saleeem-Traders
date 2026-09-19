@@ -1,0 +1,1 @@
+export function ContactForm() { return <form className="form"><input className="input" placeholder="Full name"/><input className="input" placeholder="Phone or email"/><textarea rows={5} placeholder="How can we help?"/><button className="button">Send message</button></form>; }

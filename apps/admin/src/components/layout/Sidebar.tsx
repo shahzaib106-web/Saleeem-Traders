@@ -1,0 +1,1 @@
+import Link from "next/link"; const links = ["orders","products","categories","brands","customers","quotes","inventory","analytics","settings"]; export function Sidebar(){return <aside className="sidebar"><h2>Saleeem Admin</h2><Link href="/dashboard">Dashboard</Link>{links.map(l=><Link key={l} href={`/dashboard/${l}`}>{l[0].toUpperCase()+l.slice(1)}</Link>)}</aside>}
