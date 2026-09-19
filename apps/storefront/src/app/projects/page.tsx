@@ -1,3 +1,24 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { projects } from "@/data/catalog";
-export default function ProjectsPage(){return <section className="container section"><div className="breadcrumb"><Link href="/">Home</Link> / Projects</div><h1>Ideas for your next space</h1><p className="muted" style={{fontSize:22}}>Explore materials, finishes and room combinations.</p><div className="tabs"><span className="tab active">All spaces</span><span className="tab">Bathrooms</span><span className="tab">Kitchens</span><span className="tab">Living spaces</span><span className="tab">Outdoor</span></div><h2>Design inspiration</h2><div className="project-grid"><Link href={`/projects/${projects[0].slug}`} className="project-card big"><img src={projects[0].image} alt={projects[0].title}/><h3>{projects[0].title}<br/><small>Explore the look →</small></h3></Link><div className="stack">{projects.slice(1,3).map(p=><Link key={p.slug} href={`/projects/${p.slug}`} className="project-card small"><img src={p.image} alt={p.title}/><h3>{p.title}<br/><small>Explore the look →</small></h3></Link>)}</div></div><div className="masonry">{projects.slice(1).map(p=><Link key={p.slug} href={`/projects/${p.slug}`} className="project-card"><img src={p.image} alt={p.title}/><h3>{p.title}<br/><small>Explore the look →</small></h3></Link>)}</div><div className="panel" style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:36}}><h2>Bring your ideas to the showroom</h2><Link href="/contact" className="button">Plan your visit</Link></div></section>}
+import { ProjectsGallery } from "@/components/projects/ProjectsGallery";
+
+export const metadata: Metadata = { title: "Inspiration", description: "Explore materials, finishes and room combinations." };
+
+export default function ProjectsPage() {
+  return (
+    <section className="container section">
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link href="/">Home</Link> / Inspiration
+      </nav>
+      <h1>Ideas for your next space</h1>
+      <p className="muted lead">Explore materials, finishes and room combinations.</p>
+      <ProjectsGallery />
+      <div className="panel cta-panel" style={{ marginTop: 36 }}>
+        <h2>Bring your ideas to the showroom</h2>
+        <Link href="/contact" className="button">
+          Plan your visit
+        </Link>
+      </div>
+    </section>
+  );
+}

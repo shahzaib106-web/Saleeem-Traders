@@ -1,2 +1,13 @@
-import Link from "next/link";
-export default function SuccessPage(){return <section className="container section"><div className="panel" style={{textAlign:'center'}}><span className="step-no" style={{margin:'0 auto'}}>✓</span><h1>Order received</h1><p className="muted">Our team will call to confirm stock and delivery details.</p><Link className="button" href="/products">Continue shopping</Link></div></section>}
+import type { Metadata } from "next";
+import { OrderSummary } from "@/components/checkout/OrderSummary";
+
+export const metadata: Metadata = { title: "Order received" };
+
+export default async function SuccessPage({ searchParams }: { searchParams: Promise<{ order?: string }> }) {
+  const { order } = await searchParams;
+  return (
+    <section className="container section">
+      <OrderSummary orderId={order} />
+    </section>
+  );
+}

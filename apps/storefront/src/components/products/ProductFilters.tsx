@@ -1,2 +1,5 @@
-import { categories, brands } from "@/data/catalog";
-export function ProductFilters() { return <aside className="panel"><h3>Filters</h3><label>Category<select><option>All categories</option>{categories.map(c => <option key={c.slug}>{c.name}</option>)}</select></label><br/><br/><label>Brand<select><option>All brands</option>{brands.map(b => <option key={b.slug}>{b.name}</option>)}</select></label><br/><br/><button className="button">Apply filters</button></aside>; }
+/**
+ * Filters are rendered by <ProductListing /> (they need the listing state).
+ * This module is kept so existing imports keep resolving.
+ */
+export { ProductListing as ProductFilters } from "./ProductListing";

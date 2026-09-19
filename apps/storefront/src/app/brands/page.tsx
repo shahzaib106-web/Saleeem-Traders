@@ -1,3 +1,38 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-import { brands } from "@/data/catalog";
-export default function BrandsPage(){return <><section className="brand-hero"><div className="container"><div><div className="breadcrumb"><Link href="/">Home</Link> / Brands</div><h1>Explore our brands</h1><p className="muted" style={{fontSize:22}}>Find tiles and fittings by manufacturer.</p></div><img src="/images/demo/showroom.jpg" alt="Brands showroom" /></div></section><section className="section"><div className="container"><div className="listing-top"><div className="search" style={{width:'58%'}}><input placeholder="Search brands..." /></div><div className="tabs" style={{margin:0}}><span className="tab active">All</span><span className="tab">A – F</span><span className="tab">G – L</span><span className="tab">M – R</span><span className="tab">S – Z</span></div></div><div className="grid brand-grid">{brands.map(b=><Link className="brand-card" href={`/brands/${b.slug}`} key={b.slug}><img src={b.image} alt={b.name}/><div><h3>{b.name}</h3><p className="muted">{b.description}</p><strong>Explore products →</strong></div></Link>)}</div></div></section><section className="cta-strip"><div className="container"><div><h2>Need help comparing options?</h2><p className="muted">Our team can help you choose the right products for your space and budget.</p></div><Link className="button" href="/quote">Request a quote</Link></div></section></>}
+import { BrandDirectory } from "@/components/brands/BrandDirectory";
+import { PageHero } from "@/components/layout/PageHero";
+
+export const metadata: Metadata = { title: "Brands", description: "Find tiles, sanitaryware and fittings by manufacturer." };
+
+export default function BrandsPage() {
+  return (
+    <>
+      <PageHero
+        eyebrow="Trusted manufacturers"
+        title="Explore our brands."
+        text="Find tiles and fittings by manufacturer."
+        image="/images/demo/showroom.jpg"
+        imageAlt="Brand displays inside the Saleem Traders showroom"
+        crumbs={[{ label: "Brands" }]}
+        primary={{ label: "Shop all products", href: "/products" }}
+      />
+      <section className="section">
+        <div className="container">
+          <BrandDirectory />
+        </div>
+      </section>
+      <section className="cta-strip">
+        <div className="container cta-panel">
+          <div>
+            <h2>Need help comparing options?</h2>
+            <p className="muted">Our team can help you choose the right products for your space and budget.</p>
+          </div>
+          <Link className="button" href="/quote">
+            Request a quote
+          </Link>
+        </div>
+      </section>
+    </>
+  );
+}

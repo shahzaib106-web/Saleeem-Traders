@@ -1,1 +1,2 @@
-export function useAuth() { return { user: null, isAuthenticated: false }; }
+"use client";
+export { useAuthContext as useAuth } from "@/store/auth.store";

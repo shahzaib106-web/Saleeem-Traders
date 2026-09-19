@@ -1,1 +1,2 @@
-export function ProductSort() { return <select><option>Sort by featured</option><option>Price low to high</option><option>Newest</option></select>; }
+/** Sorting lives inside <ProductListing />; kept for import compatibility. */
+export { ProductListing as ProductSort } from "./ProductListing";

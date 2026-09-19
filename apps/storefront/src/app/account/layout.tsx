@@ -1,2 +1,8 @@
-import Link from "next/link";
-export default function AccountLayout({ children }: { children: React.ReactNode }) { return <section className="section"><div className="container split" style={{alignItems:"start", gridTemplateColumns:"240px 1fr"}}><aside className="panel"><h3>Account</h3><Link href="/account">Overview</Link><br/><Link href="/account/orders">Orders</Link><br/><Link href="/account/addresses">Addresses</Link><br/><Link href="/account/profile">Profile</Link></aside><div>{children}</div></div></section>; }
+import type { Metadata } from "next";
+import { AccountShell } from "@/components/account/AccountShell";
+
+export const metadata: Metadata = { title: "My account" };
+
+export default function AccountLayout({ children }: { children: React.ReactNode }) {
+  return <AccountShell>{children}</AccountShell>;
+}

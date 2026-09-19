@@ -1,1 +1,34 @@
-export default function GalleryPage() { return <section className="section"><div className="container"><div className="section-head"><h1>Gallery</h1><p>Showroom displays and project inspiration.</p></div><div className="grid categories">{["Bath display","Tile wall","Lighting setup","Hardware aisle","Paint counter","Project delivery"].map(item => <div className="card category-card" key={item}><div className="category-card__icon">▣</div><h3>{item}</h3><p>Visual placeholder ready for real store imagery.</p></div>)}</div></div></section>; }
+import type { Metadata } from "next";
+import Link from "next/link";
+import { gallery } from "@/data/catalog";
+
+export const metadata: Metadata = { title: "Gallery", description: "Showroom displays and project inspiration." };
+
+export default function GalleryPage() {
+  return (
+    <section className="section">
+      <div className="container">
+        <nav className="breadcrumb" aria-label="Breadcrumb">
+          <Link href="/">Home</Link> / Gallery
+        </nav>
+        <div className="section-head">
+          <div>
+            <h1>Gallery</h1>
+            <p className="muted">Showroom displays and project inspiration.</p>
+          </div>
+          <Link className="button secondary" href="/contact">
+            Plan a visit
+          </Link>
+        </div>
+        <div className="masonry">
+          {gallery.map((item) => (
+            <figure className="project-card" key={item.title}>
+              <img src={item.image} alt={item.title} loading="lazy" />
+              <h3>{item.title}</h3>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

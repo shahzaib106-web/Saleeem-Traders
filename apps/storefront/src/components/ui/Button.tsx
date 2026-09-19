@@ -1,2 +1,31 @@
 import Link from "next/link";
-export function Button({ href, children, variant = "primary" }: { href?: string; children: React.ReactNode; variant?: "primary" | "secondary" | "dark" }) { const className = `button ${variant === "primary" ? "" : variant}`; return href ? <Link className={className} href={href}>{children}</Link> : <button className={className}>{children}</button>; }
+import { cn } from "@/lib/utils";
+
+type Variant = "primary" | "secondary" | "light";
+
+type ButtonProps = {
+  href?: string;
+  children: React.ReactNode;
+  variant?: Variant;
+  className?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  "aria-label"?: string;
+};
+
+export function Button({ href, children, variant = "primary", className, type = "button", disabled, onClick, ...rest }: ButtonProps) {
+  const classes = cn("button", variant !== "primary" && variant, className);
+  if (href) {
+    return (
+      <Link className={classes} href={href} aria-label={rest["aria-label"]}>
+        {children}
+      </Link>
+    );
+  }
+  return (
+    <button className={classes} type={type} disabled={disabled} onClick={onClick} aria-label={rest["aria-label"]}>
+      {children}
+    </button>
+  );
+}

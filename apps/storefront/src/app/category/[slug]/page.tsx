@@ -1,10 +1,41 @@
-import Link from "next/link";
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { categories, products } from "@/data/catalog";
-import { ProductGrid } from "@/components/products/ProductGrid";
+import { PageHero } from "@/components/layout/PageHero";
+import { ProductListing } from "@/components/products/ProductListing";
 
-export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params; const category = categories.find(c=>c.slug===slug); if(!category) notFound(); const list=products.filter(p=>p.category===slug);
-  return <><section className="container page-hero"><div className="breadcrumb"><Link href="/">Home</Link> / {category.name}</div><div className="panel" style={{backgroundImage:`url(/images/demo/${slug==='tiles'?'tiles':slug==='kitchen'?'kitchen':slug==='accessories'?'shower':'commode'}.jpg)`,backgroundSize:'cover',backgroundPosition:'center',minHeight:160,display:'flex',alignItems:'center'}}><div><h1>{category.name} for every space</h1><p style={{fontSize:22}}>{category.description}</p></div></div><div className="tabs"><span className="tab active">All {category.name.toLowerCase()}</span><span className="tab">Floor tiles</span><span className="tab">Wall tiles</span><span className="tab">Outdoor tiles</span></div></section><section className="container shop-layout" style={{paddingBottom:60}}><aside className="filter-panel"><div className="filter-group"><strong>Size</strong><div className="check"><span className="box"></span>30 × 60 cm</div><div className="check"><span className="box checked"></span>60 × 60 cm</div><div className="check"><span className="box"></span>60 × 120 cm</div></div><div className="filter-group"><strong>Finish</strong><div className="check"><span className="box checked"></span>Matt</div><div className="check"><span className="box"></span>Glossy</div><div className="check"><span className="box"></span>Textured</div></div><div className="filter-group"><strong>Price (PKR)</strong><div className="muted">390 — 590</div></div></aside><div><div className="listing-top"><div><span className="pill">60 × 60 cm ×</span> <span className="pill">Matt ×</span></div><label>Sort: <select className="select"><option>Recommended</option></select></label></div><ProductGrid products={list.length?list:products}/><div className="pagination"><span className="active">1</span><span>2</span><span>3</span><span>4</span><span>›</span></div></div></section></>
+type Params = Promise<{ slug: string }>;
+type Search = Promise<Record<string, string | string[] | undefined>>;
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+  const { slug } = await params;
+  const category = categories.find((c) => c.slug === slug);
+  if (!category) return {};
+  return { title: category.name, description: category.description };
 }
-export function generateStaticParams(){return categories.map(c=>({slug:c.slug}))}
+
+export default async function CategoryPage({ params, searchParams }: { params: Params; searchParams: Search }) {
+  const { slug } = await params;
+  // Reading searchParams opts this route into request-time rendering so the
+  // client listing receives the URL filters during SSR (no blank grid on load).
+  await searchParams;
+  const category = categories.find((c) => c.slug === slug);
+  if (!category) notFound();
+  const list = products.filter((p) => p.category === slug);
+
+  return (
+    <>
+      <PageHero
+        eyebrow={category.eyebrow}
+        title={category.heroTitle}
+        text={category.description}
+        image={category.heroImage}
+        imageAlt={category.heroAlt}
+        crumbs={[{ label: category.name }]}
+        primary={{ label: "Request a quote", href: `/quote?category=${category.slug}` }}
+        secondary={{ label: "Browse all products", href: "/products" }}
+      />
+      <ProductListing products={list} category={category} />
+    </>
+  );
+}
