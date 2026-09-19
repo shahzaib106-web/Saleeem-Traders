@@ -1,1 +1,25 @@
-export function BenefitsSection() { const items = ["Genuine products with warranty", "Trade prices for contractors", "Fast city-wide delivery", "Expert product matching"]; return <section className="section"><div className="container split"><div><h2>Why buyers choose us</h2><p className="muted">We simplify procurement with reliable stock, clear pricing and experienced guidance.</p></div><div className="grid">{items.map(i => <div className="panel" key={i}><strong>✓ {i}</strong></div>)}</div></div></section>; }
+import { IconDocument, IconTruck, IconUsers } from "@/components/ui/icons";
+
+const items = [
+  { Icon: IconUsers, title: "Expert product guidance", sub: "Support for your selection" },
+  { Icon: IconDocument, title: "Project quotations", sub: "Tailored solutions for your project" },
+  { Icon: IconTruck, title: "Delivery support", sub: "Flexible and reliable across Pakistan" }
+];
+
+export function BenefitsSection() {
+  return (
+    <section className="trust-bar" aria-label="Why shop with Saleem Traders">
+      <div className="container trust-bar__grid">
+        {items.map(({ Icon, title, sub }) => (
+          <div className="trust-item" key={title}>
+            <Icon />
+            <div>
+              <strong>{title}</strong>
+              <span>{sub}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
