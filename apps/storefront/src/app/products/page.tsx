@@ -1,6 +1,42 @@
-import { products } from "@/data/catalog";
-import { ProductGrid } from "@/components/products/ProductGrid";
+import type { Metadata } from "next";
 import Link from "next/link";
+import { categories, products } from "@/data/catalog";
+import { PageHero } from "@/components/layout/PageHero";
+import { ProductListing } from "@/components/products/ProductListing";
 
-function Filters(){return <aside className="filter-panel"><h3 style={{fontFamily:"Inter",fontSize:22,letterSpacing:0}}>Filters</h3>{[["Category",["Tiles (38)","Sanitaryware (32)","Kitchen (28)","Accessories (30)"]],["Brand",["RAK Ceramics (24)","Grohe (18)","Kohler (16)","Nobel (12)","Local (44)"]],["Availability",["In stock (128)","Out of stock (12)"]]].map(([t,items]:any)=><div className="filter-group" key={t}><strong>{t}</strong>{items.map((i:string,idx:number)=><div className="check" key={i}><span className={`box ${t==='Availability'&&idx===0?'checked':''}`}></span>{i}</div>)}</div>)}<button className="button secondary" style={{width:"100%"}}>Reset filters</button></aside>}
-export default function ProductsPage(){return <><section className="page-hero container"><div className="breadcrumb"><Link href="/">Home</Link> / Shop</div><h1>Find the right finish</h1><p className="muted" style={{fontSize:22}}>Explore tiles, sanitaryware, kitchen fittings and accessories.</p><div className="tabs"><span className="tab active">All products</span><Link className="tab" href="/category/tiles">Tiles</Link><Link className="tab" href="/category/sanitaryware">Sanitaryware</Link><Link className="tab" href="/category/kitchen">Kitchen</Link><Link className="tab" href="/category/accessories">Accessories</Link></div></section><section className="container shop-layout" style={{paddingBottom:60}}><Filters/><div><div className="listing-top"><div><span className="pill">In stock ×</span><p className="muted">Showing 1–9 of 128 products</p></div><label>Sort by <select className="select"><option>Recommended</option></select></label></div><ProductGrid products={products}/><div className="pagination"><span className="active">1</span><span>2</span><span>3</span><span>4</span><span>…</span><span>15</span><span>›</span></div></div></section></>}
+export const metadata: Metadata = {
+  title: "Shop all products",
+  description: "Explore tiles, sanitaryware, kitchen fittings and accessories from trusted brands."
+};
+
+export default async function ProductsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  await searchParams; // request-time rendering so filters in the URL are applied during SSR
+
+  return (
+    <>
+      <PageHero
+        eyebrow="The full range"
+        title="Find the right finish."
+        text="Explore tiles, sanitaryware, kitchen fittings and accessories."
+        image="/images/demo/showroom.jpg"
+        imageAlt="Saleem Traders showroom with tile and sanitaryware displays"
+        crumbs={[{ label: "Shop" }]}
+        primary={{ label: "Request a quote", href: "/quote" }}
+        secondary={{ label: "Visit our showroom", href: "/contact" }}
+      />
+      <div className="container">
+        <nav className="tabs" aria-label="Browse by category">
+          <span className="tab active" aria-current="page">
+            All products
+          </span>
+          {categories.map((c) => (
+            <Link key={c.slug} className="tab" href={`/category/${c.slug}`}>
+              {c.name}
+            </Link>
+          ))}
+        </nav>
+      </div>
+      <ProductListing products={products} />
+    </>
+  );
+}

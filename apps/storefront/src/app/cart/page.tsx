@@ -1,4 +1,8 @@
-import Link from "next/link";
-import { cartItems, products } from "@/data/catalog";
-import { formatCurrency } from "@/lib/currency";
-export default function CartPage(){const subtotal=100025;return <section className="container section"><div className="breadcrumb"><Link href="/">Home</Link> / Cart</div><h1>Your cart</h1><p className="muted" style={{fontSize:20}}>3 products</p><div className="cart-layout"><div className="cart-list">{cartItems.map(i=><div className="cart-item" key={i.product.id}><img src={i.product.image} alt={i.product.name}/><div><h3 style={{fontFamily:'Inter',fontSize:20,letterSpacing:0}}>{i.product.name}</h3><p className="muted">{i.note}</p><a href="#"><u>Remove</u></a></div><div><strong>{formatCurrency(i.product.packPrice ?? i.product.price)} / {i.product.packPrice?'box':i.product.unit}</strong><br/><br/><span className="qty"><span>−</span><span>{i.qty}</span><span>＋</span></span></div><strong style={{fontSize:20}}>{formatCurrency(i.lineTotal)}</strong></div>)}</div><aside className="summary"><h2>Order summary</h2><div className="summary-row"><span>Subtotal</span><strong>{formatCurrency(subtotal)}</strong></div><div className="summary-row"><span>Delivery</span><span>Calculated at checkout</span></div><div className="summary-row summary-total"><span>Subtotal</span><strong>{formatCurrency(subtotal)}</strong></div><select style={{margin:'14px 0'}}><option>Add a promo code</option></select><Link className="button" style={{width:'100%'}} href="/checkout">Proceed to checkout</Link><Link className="button secondary" style={{width:'100%',marginTop:12}} href="/products">Continue shopping</Link><p style={{textAlign:'center'}}><Link href="/quote"><u>Need a project quotation?</u></Link></p><hr/><p className="muted">ⓘ Delivery availability and charges depend on your location.</p></aside></div><section className="section"><h2>You may also like</h2><p className="muted">Complete your space with these accessories</p><div className="products grid">{products.slice(7,9).map(p=><div className="product-card" key={p.id}><div className="product-card__media"><img src={p.image}/></div><div className="product-card__body"><h3>{p.name}</h3><p className="price">{formatCurrency(p.price)} / {p.unit}</p><button className="button secondary">Add to cart</button></div></div>)}</div></section></section>}
+import type { Metadata } from "next";
+import { CartView } from "@/components/cart/CartView";
+
+export const metadata: Metadata = { title: "Your cart" };
+
+export default function CartPage() {
+  return <CartView />;
+}

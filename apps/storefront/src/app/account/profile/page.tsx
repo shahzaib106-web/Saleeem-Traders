@@ -1,1 +1,5 @@
-export default function ProfilePage() { return <div className="panel"><h1>Profile</h1><p className="muted">Update your customer details.</p></div>; }
+import { ProfileForm } from "@/components/account/ProfileForm";
+
+export default function ProfilePage() {
+  return <ProfileForm />;
+}

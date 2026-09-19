@@ -1,1 +1,2 @@
-export function PaymentMethods() { return <div className="panel" style={{boxShadow:"none"}}><h3>Payment</h3><p className="muted">Cash on delivery, bank transfer and account billing for approved customers.</p></div>; }
+/** Payment selection is part of <CheckoutForm />; kept for import compatibility. */
+export { CheckoutForm as PaymentMethods } from "./CheckoutForm";

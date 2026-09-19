@@ -1,2 +1,82 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-export default function ContactPage(){return <section className="container section"><div className="breadcrumb"><Link href="/">Home</Link> / Contact</div><div className="contact-layout"><div><h1>Let’s talk about your space.</h1><p className="muted" style={{fontSize:20}}>Whether you’re planning a new space, need product advice or a custom quote — our team is here to help.</p><div className="panel"><h2>Send us an enquiry</h2><form className="form"><label>Full name *</label><input className="input" placeholder="Your full name"/><label>Email address *</label><input className="input" placeholder="you@example.com"/><label>Phone number (optional)</label><input className="input" placeholder="Your phone number"/><label>Subject *</label><select><option>Product enquiry</option><option>Project quote</option></select><label>Message *</label><textarea rows={6} placeholder="Tell us about your requirements..."/><button className="button">Send enquiry →</button><p className="muted">We’ll only use your details to respond to your enquiry.</p></form></div></div><div><img src="/images/demo/showroom.jpg" alt="Showroom" style={{borderRadius:6,width:'100%',height:520}}/>{[["📍","Visit our showroom","Explore our wide range in person.","Get directions"],["☎","Speak to our team","Have a question? Our team is here to help.","Call showroom"],["☘","Prefer a message?","Get quick answers on WhatsApp.","Chat on WhatsApp"]].map(x=><div className="info-card" key={x[1]}><div className="step-no">{x[0]}</div><div><h3>{x[1]}</h3><p className="muted">{x[2]}</p></div><button className="button">{x[3]}</button></div>)}</div></div><h2 style={{marginTop:38}}>Frequently asked questions</h2>{["Can I see product samples?","Do you offer delivery?","Can I request a project quote?"].map(q=><div className="panel" style={{padding:18,marginTop:8}} key={q}><strong>{q}</strong><span style={{float:'right'}}>⌄</span></div>)}</section>}
+import { ContactForm } from "@/components/forms/ContactForm";
+import { IconChat, IconPhone, IconPin } from "@/components/ui/icons";
+import { STORE } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Contact us",
+  description: "Visit the Saleem Traders showroom in Lahore, call our team or send an enquiry."
+};
+
+const FAQ = [
+  {
+    q: "Can I see product samples?",
+    a: "Yes. Tile samples and most fittings are on display in our showroom, and we can lend tile samples for a few days so you can see them in your own light."
+  },
+  {
+    q: "Do you offer delivery?",
+    a: `We deliver across Lahore (PKR 1,500 per order, 2–4 working days) and quote deliveries to other cities before dispatch. Showroom pickup is free.`
+  },
+  {
+    q: "Can I request a project quote?",
+    a: "Absolutely. Use the Request a quote form with your plans or product list and we'll send an itemised quotation, usually within one working day."
+  },
+  {
+    q: "What are your showroom hours?",
+    a: `${STORE.hours}. We're closed on Sundays and public holidays.`
+  }
+];
+
+export default function ContactPage() {
+  const cards = [
+    { Icon: IconPin, title: "Visit our showroom", text: STORE.address, cta: "Get directions", href: STORE.mapsUrl, external: true },
+    { Icon: IconPhone, title: "Speak to our team", text: `${STORE.phone} · ${STORE.hours}`, cta: "Call showroom", href: `tel:+${STORE.phoneDigits}`, external: false },
+    { Icon: IconChat, title: "Prefer a message?", text: "Get quick answers on WhatsApp.", cta: "Chat on WhatsApp", href: `https://wa.me/${STORE.whatsapp}?text=${encodeURIComponent("Hello Saleem Traders, I have a question about ")}`, external: true }
+  ];
+
+  return (
+    <section className="container section">
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link href="/">Home</Link> / Contact
+      </nav>
+      <div className="contact-layout">
+        <div>
+          <h1>Let&apos;s talk about your space.</h1>
+          <p className="muted lead">Whether you&apos;re planning a new space, need product advice or a custom quote — our team is here to help.</p>
+          <div className="panel">
+            <h2>Send us an enquiry</h2>
+            <ContactForm />
+          </div>
+        </div>
+        <div>
+          <img className="contact-photo" src="/images/demo/showroom.jpg" alt="Inside the Saleem Traders showroom" loading="lazy" />
+          {cards.map(({ Icon, title, text, cta, href, external }) => (
+            <div className="info-card" key={title}>
+              <div className="step-no" aria-hidden="true">
+                <Icon />
+              </div>
+              <div>
+                <h3>{title}</h3>
+                <p className="muted small">{text}</p>
+              </div>
+              <a className="button" href={href} target={external ? "_blank" : undefined} rel={external ? "noopener noreferrer" : undefined}>
+                {cta}
+              </a>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <h2 className="faq-heading">Frequently asked questions</h2>
+      <div className="faq">
+        {FAQ.map(({ q, a }) => (
+          <details key={q}>
+            <summary>{q}</summary>
+            <p>{a}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  );
+}

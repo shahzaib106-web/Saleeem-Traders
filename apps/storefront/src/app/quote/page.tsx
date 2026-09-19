@@ -1,2 +1,56 @@
+import type { Metadata } from "next";
 import Link from "next/link";
-export default function QuotePage(){return <section className="container section"><div className="breadcrumb"><Link href="/">Home</Link> / Request a quote</div><h1>Tell us what you’re planning.</h1><p className="muted" style={{fontSize:22}}>Share your requirements so our team can prepare a quotation.</p><div className="quote-form-grid"><div className="panel"><form className="form"><div className="step-title"><span className="step-no">1</span><h3>Project details</h3></div><div className="split"><select><option>Home renovation</option><option>Commercial project</option></select><input className="input" placeholder="City e.g. Lahore"/></div><hr/><div className="step-title"><span className="step-no">2</span><h3>Products required</h3></div><div className="product-choice-grid">{[["Tiles","/images/demo/tiles.jpg"],["Sanitaryware","/images/demo/commode.jpg"],["Kitchen fittings","/images/demo/tap.jpg"],["Accessories","/images/demo/shower.jpg"]].map((x,i)=><label className="choice" key={x[0]}><span className={`box ${i===0?'checked':''}`}></span><img src={x[1]} alt=""/><strong>{x[0]}</strong></label>)}</div><hr/><div className="step-title"><span className="step-no">3</span><h3>Your details</h3></div><div className="split"><input className="input" placeholder="Full name"/><input className="input" placeholder="Phone number"/><input className="input" placeholder="Email (optional)"/><select><option>WhatsApp</option><option>Phone call</option></select></div><hr/><div className="step-title"><span className="step-no">4</span><h3>Additional details</h3></div><textarea rows={5} placeholder="Preferred brands, colour scheme, timeline, or any other details..."/><div className="panel" style={{textAlign:'center',borderStyle:'dashed'}}>⇧ Add plans, photos or a product list<br/><span className="muted">PDF, JPG or PNG · Up to 10 MB</span></div><button className="button" style={{width:260}}>Request quotation</button></form></div><aside className="panel"><h2>What happens next</h2>{["We review your requirements","We clarify products and quantities","You receive an itemised quotation"].map((t,i)=><div className="step-title" key={t}><span className="step-no">{i+1}</span><div><strong>{t}</strong><p className="muted">Our team will carefully go through your details.</p></div></div>)}<hr/><p className="muted">Need help? Visit our showroom or contact us anytime.</p><img src="/images/demo/tiles.jpg" alt="Materials" style={{borderRadius:5}}/><p>Quality materials for modern living</p></aside></div></section>}
+import { QuoteForm } from "@/components/forms/QuoteForm";
+import { STORE } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Request a quote",
+  description: "Share your project requirements and receive an itemised quotation from Saleem Traders."
+};
+
+const STEPS = [
+  ["We review your requirements", "A product specialist reads through your project details and attachments."],
+  ["We clarify products and quantities", "We call or message to confirm sizes, finishes and coverage."],
+  ["You receive an itemised quotation", "A clear PDF quote with delivery options, usually within one working day."]
+];
+
+export default async function QuotePage({ searchParams }: { searchParams: Promise<{ product?: string; category?: string }> }) {
+  const { product, category } = await searchParams;
+
+  return (
+    <section className="container section">
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link href="/">Home</Link> / Request a quote
+      </nav>
+      <h1>Tell us what you&apos;re planning.</h1>
+      <p className="muted lead">Share your requirements so our team can prepare a quotation.</p>
+
+      <div className="quote-form-grid">
+        <QuoteForm productSlug={product} categorySlug={category} />
+
+        <aside className="panel quote-aside">
+          <h2>What happens next</h2>
+          {STEPS.map(([title, text], i) => (
+            <div className="step-title step-title--stack" key={title}>
+              <span className="step-no">{i + 1}</span>
+              <div>
+                <strong>{title}</strong>
+                <p className="muted small">{text}</p>
+              </div>
+            </div>
+          ))}
+          <hr />
+          <p className="muted small">
+            Need help right away? Call <a href={`tel:+${STORE.phoneDigits}`}>{STORE.phone}</a> or{" "}
+            <a href={`https://wa.me/${STORE.whatsapp}`} target="_blank" rel="noopener noreferrer">
+              message us on WhatsApp
+            </a>
+            .
+          </p>
+          <img src="/images/demo/tiles.jpg" alt="Tile samples in the Saleem Traders showroom" style={{ borderRadius: 5 }} loading="lazy" />
+          <p className="muted small">Quality materials for modern living.</p>
+        </aside>
+      </div>
+    </section>
+  );
+}
