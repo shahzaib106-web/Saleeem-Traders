@@ -1,0 +1,1 @@
+export default function TermsPage() { return <section className="section"><div className="container panel"><h1>Terms & Conditions</h1><p className="muted">Prices, stock and delivery timelines are confirmed at order processing time.</p></div></section>; }

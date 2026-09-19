@@ -1,0 +1,3 @@
+import type { Product } from "@/types/product";
+import { formatCurrency } from "@/lib/currency";
+export function ProductInfo({ product }: { product: Product }) { return <div className="panel"><span className="badge">★ {product.rating} rating</span><h1>{product.name}</h1><p className="muted">{product.description}</p><div className="price"><span>{formatCurrency(product.price)}</span>{product.oldPrice && <del>{formatCurrency(product.oldPrice)}</del>}</div><div style={{display:"flex", gap:12, flexWrap:"wrap"}}><button className="button">Add to Cart</button><a className="button secondary" href="/quote">Request bulk quote</a></div></div>; }

@@ -1,0 +1,1 @@
+export function LoginForm() { return <form className="form"><input className="input" type="email" placeholder="Email"/><input className="input" type="password" placeholder="Password"/><button className="button">Login</button></form>; }

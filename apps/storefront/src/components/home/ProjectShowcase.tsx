@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { projects } from "@/data/catalog";
+export function ProjectShowcase() { return <section className="section"><div className="container"><div className="section-head"><div><h2>Design inspiration</h2><p>Explore materials, finishes and room combinations.</p></div></div><div className="grid categories">{projects.slice(0,3).map(p => <Link className="card category-card" key={p.slug} href={`/projects/${p.slug}`}><span className="badge">{p.type}</span><h3>{p.title}</h3><p>{p.desc}</p></Link>)}</div></div></section>; }

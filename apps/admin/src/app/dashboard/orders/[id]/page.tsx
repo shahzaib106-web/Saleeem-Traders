@@ -1,0 +1,1 @@
+export default async function OrderDetail({params}:{params:Promise<{id:string}>}){const {id}=await params;return <div className="card"><h1>Order {id}</h1><p className="muted">Order detail and fulfillment timeline.</p></div>}

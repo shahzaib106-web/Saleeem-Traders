@@ -1,0 +1,2 @@
+import Link from "next/link";
+export function QuoteCTA() { return <section className="section"><div className="container panel" style={{background:"linear-gradient(135deg,#0f172a,#1e293b)", color:"#fff"}}><div className="section-head" style={{marginBottom:0}}><div><span className="badge">Bulk orders</span><h2>Have a BOQ or project list?</h2><p style={{color:"#cbd5e1"}}>Upload your requirements and our team will respond with availability, alternatives and pricing.</p></div><Link className="button" href="/quote">Get a quote</Link></div></div></section>; }

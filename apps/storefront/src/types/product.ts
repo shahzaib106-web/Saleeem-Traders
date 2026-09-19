@@ -1,0 +1,1 @@
+export type Product = { id:string; name:string; slug:string; category:string; brand:string; price:number; unit:string; packPrice?:number; oldPrice?:number; rating:number; badge?:string; image:string; description:string; specifications:Record<string,string> };

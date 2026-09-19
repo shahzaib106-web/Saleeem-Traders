@@ -1,0 +1,1 @@
+import { Sidebar } from "@/components/layout/Sidebar"; import { AdminHeader } from "@/components/layout/AdminHeader"; export default function DashboardLayout({children}:{children:React.ReactNode}){return <div className="admin"><Sidebar/><main className="main"><AdminHeader/><br/>{children}</main></div>}

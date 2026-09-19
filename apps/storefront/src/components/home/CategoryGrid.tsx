@@ -1,0 +1,3 @@
+import Link from "next/link";
+import { categories } from "@/data/catalog";
+export function CategoryGrid() { return <section className="section"><div className="container"><div className="section-head"><div><h2>Shop by category</h2><p>Everything for construction, finishing and maintenance under one roof.</p></div><Link className="button secondary" href="/products">All products</Link></div><div className="grid categories">{categories.map(c => <Link key={c.slug} href={`/category/${c.slug}`} className="card category-card"><div className="category-card__icon">{c.icon}</div><h3>{c.name}</h3><p>{c.description}</p></Link>)}</div></div></section>; }

@@ -1,0 +1,1 @@
+export function PaymentMethods() { return <div className="panel" style={{boxShadow:"none"}}><h3>Payment</h3><p className="muted">Cash on delivery, bank transfer and account billing for approved customers.</p></div>; }

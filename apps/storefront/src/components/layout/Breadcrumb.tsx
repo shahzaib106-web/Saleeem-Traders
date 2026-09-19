@@ -1,0 +1,2 @@
+import Link from "next/link";
+export function Breadcrumb({ items }: { items: Array<{ label: string; href?: string }> }) { return <div className="container breadcrumb"><Link href="/">Home</Link> / {items.map((item, index) => item.href ? <span key={item.label}> <Link href={item.href}>{item.label}</Link>{index < items.length - 1 ? " /" : ""}</span> : <span key={item.label}> {item.label}</span>)}</div>; }

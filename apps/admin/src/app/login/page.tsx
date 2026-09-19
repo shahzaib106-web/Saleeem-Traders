@@ -1,0 +1,1 @@
+export default function Login(){return <main style={{display:"grid",placeItems:"center",minHeight:"100vh"}}><div className="card" style={{width:420}}><h1>Admin login</h1><input placeholder="Email"/><br/><br/><input placeholder="Password" type="password"/><br/><br/><a className="button" href="/dashboard">Login</a></div></main>}
