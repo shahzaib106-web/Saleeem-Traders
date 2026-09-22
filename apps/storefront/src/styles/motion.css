@@ -1,0 +1,774 @@
+/* =========================================================
+   Motion layer
+   ---------------------------------------------------------
+   Loaded last, so it owns all transitions/keyframes.
+
+   Three tiers:
+   1. ambient   — hero Ken Burns, skeleton shimmer (always on)
+   2. reveal    — scroll-triggered entrances, opt-in per element
+                  with `data-reveal`, driven by <MotionProvider />
+   3. response  — hover / focus / active micro-interactions
+
+   Everything is gated so that:
+   • with JS off, no `html.js-motion` class is ever added, so
+     reveal targets stay fully visible (no invisible content)
+   • with `prefers-reduced-motion: reduce`, all animation and
+     transition durations collapse to ~0 and reveals show at once
+   ========================================================= */
+
+:root {
+  /* --- easings -------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 0.68, 0.24, 1);
+  --ease-in-out: cubic-bezier(0.5, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.36, 0.48, 1);
+
+  /* --- durations ------------------------------------------------------ */
+  --dur-1: 0.16s;
+  --dur-2: 0.26s;
+  --dur-3: 0.42s;
+  --dur-4: 0.68s;
+
+  /* --- reveal --------------------------------------------------------- */
+  --reveal-offset: 22px;
+  --reveal-delay: 0ms;
+}
+
+/* ---------------------------------------------------------
+   Keyframes
+   --------------------------------------------------------- */
+@keyframes st-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, var(--reveal-offset), 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes st-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes st-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.14);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes st-drop-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes st-toast {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes st-ken-burns {
+  from {
+    transform: scale(1.02) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.13) translate3d(0, -1.8%, 0);
+  }
+}
+
+@keyframes st-sheen {
+  from {
+    transform: translate3d(-130%, 0, 0);
+  }
+  to {
+    transform: translate3d(130%, 0, 0);
+  }
+}
+
+@keyframes st-route {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------
+   1. Ambient
+   --------------------------------------------------------- */
+
+/* Route change: a soft fade on <main>, toggled by MotionProvider.
+   Opacity only — a transform here would become the containing block
+   for the fixed filter backdrop inside listings. */
+main.route-in {
+  animation: st-route 0.34s var(--ease-out);
+}
+
+/* Hero: slow Ken Burns on the plate, staggered rise on the copy. */
+.home-hero__media img {
+  will-change: transform;
+  animation: st-ken-burns 28s var(--ease-in-out) infinite alternate;
+}
+
+html.js-motion .home-hero__inner > * {
+  animation: st-rise 0.82s var(--ease-out) both;
+}
+
+html.js-motion .home-hero__inner > *:nth-child(1) {
+  animation-delay: 0.06s;
+}
+
+html.js-motion .home-hero__inner > *:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+html.js-motion .home-hero__inner > *:nth-child(3) {
+  animation-delay: 0.22s;
+}
+
+html.js-motion .home-hero__inner > *:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+html.js-motion .home-hero__inner > *:nth-child(5) {
+  animation-delay: 0.38s;
+}
+
+/* Loading placeholders keep the existing shimmer, slightly calmer. */
+.skeleton {
+  animation-duration: 1.6s;
+  animation-timing-function: var(--ease-in-out);
+}
+
+/* ---------------------------------------------------------
+   2. Scroll reveals (opt-in via data-reveal)
+   ---------------------------------------------------------
+   Only hidden when JS is live — see the note at the top. */
+html.js-motion [data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-offset), 0);
+  transition:
+    opacity var(--dur-4) var(--ease-out),
+    transform var(--dur-4) var(--ease-out);
+  transition-delay: var(--reveal-delay);
+}
+
+html.js-motion [data-reveal="fade"] {
+  transform: none;
+}
+
+html.js-motion [data-reveal="left"] {
+  transform: translate3d(calc(var(--reveal-offset) * -1.4), 0, 0);
+}
+
+html.js-motion [data-reveal="right"] {
+  transform: translate3d(calc(var(--reveal-offset) * 1.4), 0, 0);
+}
+
+html.js-motion [data-reveal="scale"] {
+  transform: scale(0.955);
+}
+
+html.js-motion [data-reveal].is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------
+   3. Response — header & navigation
+   --------------------------------------------------------- */
+.site-header {
+  transition:
+    box-shadow var(--dur-3) var(--ease-out),
+    background-color var(--dur-3) var(--ease-out),
+    border-color var(--dur-3) var(--ease-out);
+}
+
+.site-header.is-scrolled {
+  background-color: rgba(251, 250, 247, 0.97);
+  border-bottom-color: #ded7c8;
+  box-shadow: 0 12px 34px rgba(16, 42, 62, 0.09);
+}
+
+@media (min-width: 1021px) {
+  .site-header__inner {
+    transition: height var(--dur-3) var(--ease-out);
+  }
+
+  .site-header.is-scrolled .site-header__inner {
+    height: 68px;
+  }
+
+  .site-header.is-scrolled .brand-logo svg {
+    width: 38px;
+    height: 38px;
+  }
+}
+
+.brand-logo svg {
+  transition:
+    width var(--dur-3) var(--ease-out),
+    height var(--dur-3) var(--ease-out),
+    transform var(--dur-3) var(--ease-spring);
+}
+
+.brand-logo:hover svg {
+  transform: rotate(-4deg);
+}
+
+/* Underline sweep replaces the instant border-bottom swap. The border is
+   kept transparent at every state so the old :hover rule can't double up. */
+.site-header__nav a,
+.site-header__nav a:hover,
+.site-header__nav a[aria-current="page"] {
+  position: relative;
+  border-bottom-color: transparent;
+}
+
+.site-header__nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--tan);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.site-header__nav a:hover::after,
+.site-header__nav a[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+.site-header__nav a {
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+.icon-btn {
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-spring);
+}
+
+.icon-btn:hover {
+  transform: translateY(-1px);
+}
+
+.icon-btn:active {
+  transform: scale(0.92);
+}
+
+/* Re-mounted on every count change (key={count}) so the badge pops. */
+.icon-btn__count {
+  animation: st-pop 0.42s var(--ease-spring) both;
+}
+
+.site-search.open {
+  animation: st-drop-in 0.28s var(--ease-out) both;
+}
+
+.site-header__mobile.open {
+  animation: st-drop-in 0.3s var(--ease-out) both;
+}
+
+.site-header__mobile a {
+  transition:
+    color var(--dur-2) var(--ease-out),
+    padding-left var(--dur-2) var(--ease-out);
+}
+
+.site-header__mobile a:hover {
+  padding-left: 6px;
+}
+
+/* ---------------------------------------------------------
+   Buttons & links
+   --------------------------------------------------------- */
+.btn,
+.button,
+button.button {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out),
+    transform var(--dur-2) var(--ease-out),
+    filter var(--dur-2) var(--ease-out);
+}
+
+.btn:hover,
+.button:hover {
+  transform: translateY(-1.5px);
+  filter: none;
+}
+
+.btn--navy:hover,
+.button:hover:not(.light):not(.secondary) {
+  box-shadow: 0 12px 26px rgba(16, 42, 62, 0.22);
+}
+
+.button.light:hover,
+.button.secondary:hover {
+  box-shadow: 0 8px 18px rgba(16, 42, 62, 0.1);
+}
+
+.btn:active,
+.button:active {
+  transform: translateY(0) scale(0.985);
+  box-shadow: none;
+  transition-duration: var(--dur-1);
+}
+
+/* Light sweep across solid buttons on hover. */
+.btn--navy::before,
+.button:not(.light):not(.secondary)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(104deg, transparent 34%, rgba(255, 255, 255, 0.22) 50%, transparent 66%);
+  transform: translate3d(-130%, 0, 0);
+  pointer-events: none;
+}
+
+.btn--navy:hover::before,
+.button:hover:not(.light):not(.secondary)::before {
+  animation: st-sheen 0.72s var(--ease-out);
+}
+
+/* Arrow nudge — covers .btn, .link-u, .link-btn and the hero link. */
+.btn svg,
+.link-u svg,
+.link-btn svg,
+.hero-link svg {
+  transition: transform 0.32s var(--ease-out);
+}
+
+.btn:hover svg,
+.link-u:hover svg,
+.link-btn:hover svg,
+.hero-link:hover svg {
+  transform: translate3d(4px, 0, 0);
+}
+
+.link-u,
+.link-btn {
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+.hero-link {
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+/* ---------------------------------------------------------
+   Cards, tiles & imagery
+   --------------------------------------------------------- */
+.product-card {
+  transition:
+    transform var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out),
+    border-color var(--dur-3) var(--ease-out);
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  border-color: #d8d1c1;
+  box-shadow: 0 24px 48px rgba(16, 42, 62, 0.13);
+}
+
+.product-card__media img {
+  transition: transform 0.7s var(--ease-out);
+}
+
+.product-card:hover .product-card__media img {
+  transform: scale(1.055);
+}
+
+.pcard {
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.pcard:hover {
+  transform: translateY(-4px);
+}
+
+.pcard__media img {
+  transition: transform 0.6s var(--ease-out);
+}
+
+.pcard:hover .pcard__media img {
+  transform: scale(1.055);
+}
+
+.cat-card img {
+  transition: transform 0.75s var(--ease-out);
+}
+
+.cat-card:hover img {
+  transform: scale(1.06);
+}
+
+.cat-card::after {
+  transition: opacity var(--dur-3) var(--ease-out);
+  opacity: 0.88;
+}
+
+.cat-card:hover::after {
+  opacity: 1;
+}
+
+.cat-card__label {
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.cat-card:hover .cat-card__label {
+  transform: translate3d(4px, 0, 0);
+}
+
+.brand-card {
+  transition:
+    transform var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out),
+    border-color var(--dur-3) var(--ease-out);
+}
+
+.brand-card:hover {
+  transform: translateY(-5px);
+  border-color: #d8d1c1;
+  box-shadow: 0 24px 48px rgba(16, 42, 62, 0.13);
+}
+
+.brand-card img {
+  transition: transform 0.8s var(--ease-out);
+}
+
+.brand-card:hover img {
+  transform: scale(1.06);
+}
+
+.project-card img {
+  transition: transform 0.9s var(--ease-out);
+}
+
+.project-card:hover img {
+  transform: scale(1.07);
+}
+
+.project-card h3 {
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.project-card:hover h3 {
+  transform: translate3d(0, -4px, 0);
+}
+
+.inspire__media img,
+.showcase-row img,
+.contact-photo,
+.page-hero img {
+  transition: transform 0.9s var(--ease-out);
+}
+
+/* Crossfade whenever the shopper switches the main product image
+   (ProductGallery re-mounts it with key={current}). */
+.gallery-main img {
+  animation: st-fade 0.4s var(--ease-out) both;
+}
+
+.inspire:hover .inspire__media img {
+  transform: scale(1.035);
+}
+
+.thumb {
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-spring),
+    opacity var(--dur-2) var(--ease-out);
+  opacity: 0.78;
+}
+
+.thumb:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.thumb.active {
+  opacity: 1;
+}
+
+/* Wishlist heart */
+.wish {
+  transition:
+    transform var(--dur-2) var(--ease-spring),
+    background-color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out);
+}
+
+.wish:hover {
+  transform: scale(1.09);
+}
+
+.wish:active {
+  transform: scale(0.94);
+}
+
+.wish--on {
+  animation: st-pop 0.4s var(--ease-spring);
+}
+
+/* ---------------------------------------------------------
+   Controls: tabs, options, inputs, pagination
+   --------------------------------------------------------- */
+.tab {
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+
+.tab:hover:not(.active) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(16, 42, 62, 0.08);
+}
+
+.tab.active {
+  box-shadow: inset 0 0 0 1px var(--navy);
+}
+
+.option,
+.radio-card,
+.choice,
+.stat,
+.order-card,
+.address-card {
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+
+.option:hover,
+.radio-card:hover {
+  transform: translateY(-1px);
+}
+
+.stat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(16, 42, 62, 0.08);
+}
+
+.chip {
+  animation: st-pop 0.3s var(--ease-out) both;
+}
+
+.chip button {
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+
+.pagination button {
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-spring);
+}
+
+.pagination button:hover:not(:disabled):not([aria-current]) {
+  transform: translateY(-2px);
+}
+
+.qty button {
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+
+.input,
+select,
+textarea,
+.search {
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out);
+}
+
+.input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(22, 53, 78, 0.11);
+  outline: none;
+}
+
+.input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.dropzone {
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+
+.dropzone:hover {
+  transform: translateY(-1px);
+}
+
+.faq details {
+  transition:
+    border-color var(--dur-2) var(--ease-out),
+    box-shadow var(--dur-2) var(--ease-out);
+}
+
+.faq details:hover {
+  border-color: #d3ccbc;
+}
+
+.faq details[open] {
+  box-shadow: 0 10px 24px rgba(16, 42, 62, 0.06);
+}
+
+.faq summary {
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+.faq summary:hover {
+  color: var(--navy);
+}
+
+/* ---------------------------------------------------------
+   Overlays: toasts, mobile filter drawer, newsletter success
+   --------------------------------------------------------- */
+.toast {
+  animation: st-toast 0.4s var(--ease-spring) both;
+  transition: box-shadow var(--dur-2) var(--ease-out);
+}
+
+.toast:hover {
+  box-shadow: 0 18px 46px rgba(16, 42, 62, 0.34);
+}
+
+.toast__close {
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+
+.newsletter__ok {
+  animation: st-pop 0.42s var(--ease-spring) both;
+}
+
+.filter-backdrop {
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.filter-panel {
+  transition:
+    transform var(--dur-3) var(--ease-out),
+    box-shadow var(--dur-3) var(--ease-out);
+}
+
+.filter-option {
+  transition: color var(--dur-1) var(--ease-out);
+}
+
+.trust-item svg {
+  transition: transform var(--dur-3) var(--ease-spring);
+}
+
+.trust-item:hover svg {
+  transform: translateY(-2px) scale(1.06);
+}
+
+.about-values .icon svg {
+  transition: transform var(--dur-3) var(--ease-spring);
+}
+
+.about-values > div:hover .icon svg {
+  transform: translateY(-3px) scale(1.07);
+}
+
+.site-footer__social a {
+  transition:
+    color var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-spring);
+}
+
+.site-footer__social a:hover {
+  transform: translateY(-2px);
+}
+
+.step-no {
+  transition: transform var(--dur-3) var(--ease-spring);
+}
+
+.info-card:hover .step-no {
+  transform: scale(1.06);
+}
+
+/* ---------------------------------------------------------
+   Reduced motion — everything collapses to a static page
+   --------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html.js-motion [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .home-hero__media img {
+    animation: none !important;
+    transform: none !important;
+  }
+}

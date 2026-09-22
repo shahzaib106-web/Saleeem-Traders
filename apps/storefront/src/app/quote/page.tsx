@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { QuoteForm } from "@/components/forms/QuoteForm";
 import { STORE } from "@/lib/constants";
+import { reveal } from "@/lib/motion";
 
 export const metadata: Metadata = {
   title: "Request a quote",
@@ -22,16 +23,18 @@ export default async function QuotePage({ searchParams }: { searchParams: Promis
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link href="/">Home</Link> / Request a quote
       </nav>
-      <h1>Tell us what you&apos;re planning.</h1>
-      <p className="muted lead">Share your requirements so our team can prepare a quotation.</p>
+      <h1 {...reveal(0, "up")}>Tell us what you&apos;re planning.</h1>
+      <p className="muted lead" {...reveal(1, "up", 90)}>
+        Share your requirements so our team can prepare a quotation.
+      </p>
 
       <div className="quote-form-grid">
         <QuoteForm productSlug={product} categorySlug={category} />
 
-        <aside className="panel quote-aside">
+        <aside className="panel quote-aside" {...reveal(0, "up", 120)}>
           <h2>What happens next</h2>
           {STEPS.map(([title, text], i) => (
-            <div className="step-title step-title--stack" key={title}>
+            <div className="step-title step-title--stack" key={title} {...reveal(i + 1, "up", 80)}>
               <span className="step-no">{i + 1}</span>
               <div>
                 <strong>{title}</strong>

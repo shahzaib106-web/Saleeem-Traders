@@ -11,7 +11,8 @@ export function ProductGallery({ product }: { product: Product }) {
   return (
     <div className="gallery">
       <div className="gallery-main">
-        <img src={current} alt={`${product.name} — image ${active + 1} of ${images.length}`} />
+        {/* key={current} re-mounts the image so the crossfade replays on change */}
+        <img key={current} src={current} alt={`${product.name} — image ${active + 1} of ${images.length}`} />
       </div>
       {images.length > 1 && (
         <div className="thumbs" role="tablist" aria-label="Product images">

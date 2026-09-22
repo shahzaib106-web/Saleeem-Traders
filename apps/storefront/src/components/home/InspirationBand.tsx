@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { Arrow } from "@/components/ui/icons";
+import { reveal } from "@/lib/motion";
 
 export function InspirationBand() {
   return (
     <section className="inspire" aria-label="Space inspiration">
-      <div className="inspire__media">
+      <div className="inspire__media" {...reveal(0, "scale")}>
         <img src="/images/demo/living-warm.jpg" alt="Warm living room with linen sofa, oak slat wall and porcelain floor" loading="lazy" />
       </div>
       <div className="inspire__body">
-        <div className="inspire__copy">
+        <div className="inspire__copy" {...reveal(1, "up", 120)}>
           <p className="eyebrow">Space inspiration</p>
           <h2>
             A considered home.
@@ -20,7 +21,7 @@ export function InspirationBand() {
             Explore inspiration <Arrow />
           </Link>
         </div>
-        <figure className="inspire__swatch">
+        <figure className="inspire__swatch" {...reveal(2, "up", 120)}>
           <img src="/images/demo/swatches.jpg" alt="Porcelain tile swatches in white marble, beige marble and greige stone" loading="lazy" />
           <figcaption>Material harmony for a more livable home.</figcaption>
         </figure>

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { projectTypes, projects } from "@/data/catalog";
+import { reveal } from "@/lib/motion";
 
 export function ProjectsGallery() {
   const [type, setType] = useState<string>("");
@@ -30,7 +31,7 @@ export function ProjectsGallery() {
 
       {feature && (
         <div className="project-grid">
-          <Link href={`/projects/${feature.slug}`} className="project-card big">
+          <Link href={`/projects/${feature.slug}`} className="project-card big" {...reveal(0, "scale")}>
             <img src={feature.image} alt={feature.title} />
             <h3>
               {feature.title}
@@ -39,8 +40,8 @@ export function ProjectsGallery() {
             </h3>
           </Link>
           <div className="stack">
-            {rest.slice(0, 2).map((p) => (
-              <Link key={p.slug} href={`/projects/${p.slug}`} className="project-card small">
+            {rest.slice(0, 2).map((p, index) => (
+              <Link key={p.slug} href={`/projects/${p.slug}`} className="project-card small" {...reveal(index + 1, "up", 90)}>
                 <img src={p.image} alt={p.title} loading="lazy" />
                 <h3>
                   {p.title}
@@ -55,8 +56,8 @@ export function ProjectsGallery() {
 
       {rest.length > 2 && (
         <div className="masonry">
-          {rest.slice(2).map((p) => (
-            <Link key={p.slug} href={`/projects/${p.slug}`} className="project-card">
+          {rest.slice(2).map((p, index) => (
+            <Link key={p.slug} href={`/projects/${p.slug}`} className="project-card" {...reveal(index, "up", 70)}>
               <img src={p.image} alt={p.title} loading="lazy" />
               <h3>
                 {p.title}

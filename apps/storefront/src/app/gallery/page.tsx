@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { gallery } from "@/data/catalog";
+import { reveal } from "@/lib/motion";
 
 export const metadata: Metadata = { title: "Gallery", description: "Showroom displays and project inspiration." };
 
@@ -21,8 +22,8 @@ export default function GalleryPage() {
           </Link>
         </div>
         <div className="masonry">
-          {gallery.map((item) => (
-            <figure className="project-card" key={item.title}>
+          {gallery.map((item, index) => (
+            <figure className="project-card" key={item.title} {...reveal(index, "scale", 70)}>
               <img src={item.image} alt={item.title} loading="lazy" />
               <h3>{item.title}</h3>
             </figure>

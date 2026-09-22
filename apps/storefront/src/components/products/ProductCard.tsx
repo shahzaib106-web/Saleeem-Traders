@@ -7,8 +7,10 @@ import { categoryMap } from "@/data/catalog";
 import { useWishlist, useToast } from "@/store/ui.store";
 import { useCart } from "@/hooks/useCart";
 import { IconHeart } from "@/components/ui/icons";
+import { reveal } from "@/lib/motion";
 
-export function ProductCard({ product }: { product: Product }) {
+/** `index` drives the staggered scroll-reveal applied to the card itself. */
+export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const wishlist = useWishlist();
   const cart = useCart();
   const { notify } = useToast();
@@ -32,7 +34,7 @@ export function ProductCard({ product }: { product: Product }) {
   };
 
   return (
-    <article className="product-card">
+    <article className="product-card" {...reveal(index, "up", 60)}>
       <div className="product-card__media">
         <Link href={href} aria-label={product.name} className="product-card__link">
           <img src={product.image} alt={product.name} loading="lazy" />
@@ -57,10 +59,7 @@ export function ProductCard({ product }: { product: Product }) {
           {!inStock && <span className="stock-pill">Made to order</span>}
         </div>
         <div className="price">
-          {formatCurrency(product.price)}{" "}
-          <span className="muted" style={{ fontSize: 14, fontWeight: 600 }}>
-            per {product.unit}
-          </span>
+          {formatCurrency(product.price)} <span className="price__unit">per {product.unit}</span>
         </div>
         <div className="product-card__actions">
           <Link className="button" href={href}>

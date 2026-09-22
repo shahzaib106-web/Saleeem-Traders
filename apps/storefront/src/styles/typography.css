@@ -1,0 +1,763 @@
+/* =========================================================
+   Typography & colour layer
+   ---------------------------------------------------------
+   Loaded after globals.css, so it refines the existing design
+   instead of fighting it:
+
+   • one fluid type scale (rem/clamp) instead of ad-hoc px sizes
+   • variable-font weights + optical sizing for both families
+   • a text-colour ramp where every body-copy colour clears
+     WCAG AA 4.5:1 on the surface it actually sits on
+     (--muted was 4.39:1 on paper and 4.00:1 on cream — both fail)
+   • tabular figures for prices, quantities and totals
+   ========================================================= */
+
+:root {
+  /* --- fluid type scale (min → max) ---------------------------------- */
+  --fs-display: clamp(2.625rem, 1.55rem + 3.9vw, 4.25rem); /* 42 → 68 */
+  --fs-h1: clamp(2.125rem, 1.4rem + 2.6vw, 3.5rem); /* 34 → 56 */
+  --fs-h2: clamp(1.75rem, 1.35rem + 1.3vw, 2.625rem); /* 28 → 42 */
+  --fs-h3: clamp(1.25rem, 1.15rem + 0.35vw, 1.5rem); /* 20 → 24 */
+  --fs-h4: 1.0625rem; /* 17 */
+  --fs-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.1875rem); /* 17 → 19 */
+  --fs-body: 1rem; /* 16 */
+  --fs-md: 0.9375rem; /* 15 */
+  --fs-sm: 0.875rem; /* 14 */
+  --fs-xs: 0.8125rem; /* 13 */
+  --fs-micro: 0.75rem; /* 12 */
+
+  /* --- line heights --------------------------------------------------- */
+  --lh-display: 1.03;
+  --lh-heading: 1.14;
+  --lh-subhead: 1.28;
+  --lh-body: 1.62;
+  --lh-ui: 1.45;
+
+  /* --- tracking ------------------------------------------------------- */
+  --ls-display: -0.024em;
+  --ls-heading: -0.015em;
+  --ls-body: -0.004em;
+  --ls-ui: 0.002em;
+  --ls-caps: 0.16em;
+
+  /* --- weights (variable fonts: 100–900 Inter, 200–900 Source Serif) --- */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-ui-heading: 650;
+  --fw-bold: 700;
+  --fw-price: 720;
+
+  /* --- text colours (contrast verified against the surface they sit on) --
+     paper  #fbfaf7 · cream #f3efe6 · navy #16354e                        */
+  --ink-strong: #0f1d28; /* 16.4:1 on paper — display headings, prices   */
+  --ink: #1c2b36; /* 13.9:1 — body copy                                   */
+  --ink-soft: #3d4d59; /*  8.4:1 — leads, secondary paragraphs            */
+  --muted: #58636e; /*  5.9:1 paper · 5.3:1 cream · 6.1:1 white — meta   */
+  --faint: #6d7883; /*  4.6:1 — footnotes, fine print (was 4.39:1)       */
+  --accent-ink: #7d5f39; /*  5.6:1 paper · 5.1:1 cream — eyebrow text    */
+  --link: #16354e;
+  --link-hover: #0f2a3e;
+  --on-navy: #f2f6f8; /* 11.9:1 on navy                                   */
+  --on-navy-soft: #cdd9e1; /*  8.8:1 on navy — supporting copy            */
+  --on-dark: #eef3f6;
+  --ok: #1c6b36; /*  6.3:1 — in stock (was #239647 at 3.64:1)            */
+  --warn: #8a5a0d; /*  5.7:1 — made to order (was #a86b12 at 4.21:1)     */
+  --danger: #9c2a24; /*  7.3:1 — field errors                            */
+  --focus-ring: #16354e; /* 12.2:1 — was --gold at 2.95:1 (fails 3:1)    */
+  --focus-ring-on-dark: #f4ead9;
+
+  /* --- measure -------------------------------------------------------- */
+  --measure: 66ch;
+  --measure-wide: 82ch;
+}
+
+/* ---------------------------------------------------------
+   Document defaults
+   --------------------------------------------------------- */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  color: var(--ink);
+  font-optical-sizing: auto;
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(176, 141, 95, 0.26);
+  color: var(--ink-strong);
+}
+
+p {
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  text-wrap: pretty;
+}
+
+/* Long-form copy gets a readable measure instead of running edge to edge. */
+.split p,
+.about p,
+.faq details p,
+.success-panel p {
+  max-width: var(--measure);
+}
+
+strong,
+b {
+  font-weight: var(--fw-bold);
+  color: inherit;
+}
+
+small {
+  font-size: var(--fs-sm);
+  line-height: var(--lh-ui);
+}
+
+/* ---------------------------------------------------------
+   Headings — Source Serif 4 for display, Inter for UI panels
+   --------------------------------------------------------- */
+h1,
+h2,
+h3,
+.serif {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  color: var(--navy);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: var(--ls-display);
+  font-weight: var(--fw-semibold);
+  margin: 0 0 0.3em;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--ls-heading);
+  font-weight: var(--fw-semibold);
+  margin: 0 0 0.34em;
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  line-height: var(--lh-subhead);
+  letter-spacing: var(--ls-heading);
+  font-weight: var(--fw-semibold);
+  margin: 0 0 0.4em;
+}
+
+h4 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h4);
+  line-height: var(--lh-subhead);
+  letter-spacing: var(--ls-ui);
+  font-weight: var(--fw-ui-heading);
+  color: var(--ink-strong);
+  margin: 0 0 0.4em;
+}
+
+/* Panel / UI headings stay in the sans face, but share one weight + tracking. */
+.listing-title,
+.filter-panel__head h2,
+.calc h3,
+.spec-tabs h3,
+.cart-item__info h3,
+.step-title h3,
+.info-card h3,
+.footer h3,
+.empty-state h3 {
+  font-family: var(--font-sans);
+  font-weight: var(--fw-ui-heading);
+  letter-spacing: -0.008em;
+  color: var(--ink-strong);
+  text-wrap: balance;
+}
+
+.listing-title {
+  font-size: var(--fs-h4);
+}
+
+.filter-panel__head h2,
+.calc h3,
+.step-title h3 {
+  font-size: var(--fs-h4);
+}
+
+.spec-tabs h3 {
+  font-size: 1.25rem;
+}
+
+.cart-item__info h3 {
+  font-size: var(--fs-h4);
+}
+
+.info-card h3 {
+  font-size: var(--fs-h4);
+  letter-spacing: -0.006em;
+}
+
+/* Legacy rules pointed these at "Playfair Display", which is not loaded,
+   so they silently fell back to Georgia. Route them to the real face. */
+.summary-total,
+.page-hero h1,
+.project-card h3 {
+  font-family: var(--font-serif);
+}
+
+/* ---------------------------------------------------------
+   Eyebrows, leads and meta text
+   --------------------------------------------------------- */
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  line-height: 1.7;
+  color: var(--accent-ink);
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  letter-spacing: var(--ls-body);
+  color: var(--ink-soft);
+  max-width: var(--measure);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small,
+.listing-foot,
+.newsletter__fine,
+.site-footer__bottom,
+.breadcrumb,
+.form-note {
+  font-size: var(--fs-xs);
+  line-height: var(--lh-ui);
+  color: var(--muted);
+}
+
+.listing-count,
+.pcard p,
+.trust-item span,
+.site-footer__brand p,
+.site-footer__col a,
+.newsletter__copy p,
+.inspire__copy p {
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  letter-spacing: var(--ls-ui);
+}
+
+.pcard p,
+.trust-item span,
+.site-footer__brand p {
+  color: var(--muted);
+}
+
+.inspire__copy p,
+.newsletter__copy p {
+  color: var(--ink-soft);
+}
+
+.trust-item strong {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-ui-heading);
+  letter-spacing: -0.006em;
+  color: var(--ink-strong);
+}
+
+.bullets {
+  color: var(--ink-soft);
+  line-height: 1.7;
+  font-size: var(--fs-md);
+}
+
+/* ---------------------------------------------------------
+   Links
+   --------------------------------------------------------- */
+.link-u,
+.link-btn {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-ui);
+  color: var(--link);
+}
+
+.link-u:hover,
+.link-btn:hover {
+  color: var(--link-hover);
+}
+
+.site-footer__col a {
+  color: var(--ink-soft);
+}
+
+.site-footer__col a:hover {
+  color: var(--navy);
+}
+
+/* ---------------------------------------------------------
+   Numerals: prices, quantities, totals, stats
+   --------------------------------------------------------- */
+.price,
+.big-price,
+.summary-total,
+.summary-row,
+.cart-item__total,
+.qty input,
+.stat strong,
+.spec-tabs td,
+.listing-count {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.price {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-price);
+  letter-spacing: -0.014em;
+  color: var(--ink-strong);
+}
+
+.price__unit {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0;
+  color: var(--muted);
+}
+
+.product-card .price {
+  font-size: var(--fs-h4);
+  margin: 10px 0 12px;
+}
+
+.big-price {
+  font-family: var(--font-sans);
+  font-size: clamp(1.75rem, 1.35rem + 1.1vw, 2.25rem);
+  font-weight: var(--fw-price);
+  letter-spacing: -0.02em;
+  color: var(--ink-strong);
+}
+
+.big-price .muted {
+  font-size: 0.5em;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0;
+}
+
+.summary-total {
+  font-size: 1.625rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-heading);
+  color: var(--navy);
+}
+
+.cart-item__total {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-bold);
+  color: var(--ink-strong);
+}
+
+.stat strong {
+  font-family: var(--font-sans);
+  font-size: 1.625rem;
+  font-weight: var(--fw-price);
+  letter-spacing: -0.02em;
+  color: var(--navy);
+}
+
+.stat span {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------
+   Status / badges / pills
+   --------------------------------------------------------- */
+.stock {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.01em;
+}
+
+.stock--in {
+  color: var(--ok);
+}
+
+.stock--order {
+  color: var(--warn);
+}
+
+.product-card__badge,
+.stock-pill,
+.status-pill,
+.badge {
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.09em;
+}
+
+.product-card__badge {
+  /* white on --gold measured 3.08:1; the deeper tan clears 4.5:1 */
+  background: var(--accent-ink);
+  font-weight: var(--fw-bold);
+}
+
+.stock-pill {
+  color: var(--warn);
+  background: #f6ead6;
+}
+
+.field-error {
+  color: var(--danger);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+}
+
+.form-note--ok {
+  color: var(--ok);
+}
+
+.form-note--error {
+  color: var(--danger);
+}
+
+/* ---------------------------------------------------------
+   Cards & tiles
+   --------------------------------------------------------- */
+.pcard h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-ui-heading);
+  letter-spacing: -0.006em;
+  line-height: 1.35;
+  color: var(--ink-strong);
+}
+
+.product-card h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-ui-heading);
+  letter-spacing: -0.006em;
+  line-height: 1.35;
+  color: var(--ink-strong);
+}
+
+.product-card__meta {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.01em;
+  color: var(--muted);
+}
+
+.cat-card__label {
+  font-family: var(--font-serif);
+  font-size: 1.3125rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.008em;
+  color: var(--on-dark);
+}
+
+.brand-card h3 {
+  /* legacy rule hard-set 32px here — out of proportion with the card */
+  font-size: var(--fs-h3);
+  letter-spacing: var(--ls-heading);
+}
+
+.project-card h3 {
+  font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.75rem);
+  line-height: var(--lh-subhead);
+  letter-spacing: var(--ls-heading);
+  color: var(--on-dark);
+}
+
+.project-card h3 small {
+  font-family: var(--font-sans);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.04em;
+  color: var(--on-navy-soft);
+}
+
+/* ---------------------------------------------------------
+   Hero & bands (light type on dark imagery)
+   --------------------------------------------------------- */
+.home-hero h1 {
+  color: var(--on-dark);
+}
+
+.home-hero p {
+  font-size: var(--fs-lead);
+  line-height: 1.6;
+  letter-spacing: var(--ls-body);
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.home-hero .eyebrow {
+  color: #f0e9dc;
+}
+
+.home-hero__crumbs {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+  color: var(--on-navy-soft);
+}
+
+.home-hero__crumbs a {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.home-hero--page h1 {
+  font-size: var(--fs-h1);
+}
+
+.hero-link {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--ls-ui);
+}
+
+.showroom-band h2 {
+  color: var(--on-dark);
+  font-size: clamp(1.625rem, 1.2rem + 1.5vw, 2.5rem);
+  letter-spacing: var(--ls-heading);
+}
+
+.showroom-band p {
+  font-size: var(--fs-md);
+  line-height: 1.65;
+  color: var(--on-navy-soft);
+}
+
+.product-buy h1 {
+  font-size: var(--fs-h1);
+}
+
+.product-buy__desc {
+  font-size: var(--fs-lead);
+  line-height: var(--lh-body);
+  color: var(--ink-soft);
+}
+
+.success-panel h1 {
+  font-size: var(--fs-h1);
+}
+
+.empty-state--page h1 {
+  font-size: var(--fs-h2);
+}
+
+/* ---------------------------------------------------------
+   Header, nav & controls
+   --------------------------------------------------------- */
+.brand-logo__text {
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.1em;
+  line-height: 1.15;
+  color: var(--navy);
+}
+
+.site-header__nav a {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.006em;
+  color: #2c3d49;
+}
+
+.site-header__nav a:hover,
+.site-header__nav a[aria-current="page"] {
+  color: var(--navy);
+  font-weight: var(--fw-semibold);
+}
+
+.site-header__mobile a {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  letter-spacing: 0.004em;
+}
+
+.icon-btn__count {
+  font-size: 0.6875rem;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.btn,
+.button,
+button.button {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.008em;
+  line-height: 1;
+}
+
+.tab {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.004em;
+}
+
+.sort-control {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--ink-soft);
+}
+
+.chip {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.004em;
+}
+
+.pagination button {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+label,
+.field label {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-ui-heading);
+  letter-spacing: 0.004em;
+  color: var(--ink-strong);
+}
+
+.input,
+select,
+textarea {
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  letter-spacing: var(--ls-ui);
+  color: var(--ink);
+}
+
+.input::placeholder,
+textarea::placeholder {
+  color: var(--faint);
+  opacity: 1;
+}
+
+.faq summary {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-ui-heading);
+  letter-spacing: -0.004em;
+  color: var(--ink-strong);
+}
+
+.faq details p {
+  font-size: var(--fs-md);
+  color: var(--ink-soft);
+}
+
+.newsletter label {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-ui-heading);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.newsletter__ok {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--navy);
+}
+
+.checkout-steps li {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.004em;
+}
+
+.checkout-steps li.current,
+.checkout-steps li.done {
+  color: var(--ink-strong);
+}
+
+.account-nav__name {
+  font-size: var(--fs-h4);
+  font-weight: var(--fw-ui-heading);
+  color: var(--ink-strong);
+}
+
+.account-nav nav a {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-medium);
+  color: var(--ink-soft);
+}
+
+.account-nav nav a[aria-current="page"] {
+  font-weight: var(--fw-bold);
+  color: var(--navy);
+}
+
+/* ---------------------------------------------------------
+   Focus indicators — visible on both light and dark surfaces
+   --------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.btn--navy:focus-visible,
+.button:focus-visible,
+.toast a:focus-visible,
+.showroom-band :focus-visible,
+.site-footer :focus-visible,
+.home-hero :focus-visible {
+  outline-color: var(--focus-ring-on-dark);
+}
+
+/* ---------------------------------------------------------
+   Small screens: trim the scale, keep the hierarchy
+   --------------------------------------------------------- */
+@media (max-width: 600px) {
+  :root {
+    --fs-body: 0.9375rem;
+    --lh-body: 1.58;
+  }
+
+  .home-hero--page h1 {
+    font-size: clamp(1.875rem, 1.4rem + 4vw, 2.375rem);
+  }
+
+  .home-hero p {
+    font-size: var(--fs-md);
+  }
+
+  .product-buy h1 {
+    font-size: clamp(1.75rem, 1.3rem + 3.4vw, 2.125rem);
+  }
+
+  .summary-total {
+    font-size: 1.4375rem;
+  }
+
+  .cart-item__total {
+    font-size: var(--fs-md);
+  }
+
+  .stat strong {
+    font-size: 1.375rem;
+  }
+}

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Arrow, IconBag, IconClose, IconMenu, IconSearch, LogoMark } from "@/components/ui/icons";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
+import { cn } from "@/lib/utils";
 
 const primaryLinks = [
   { label: "Tiles", href: "/category/tiles" },
@@ -27,11 +28,20 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
   const { count, hydrated } = useCart();
   const { isAuthenticated } = useAuth();
+
+  // Condense the sticky header once the page has scrolled away from the top.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Close overlays whenever the route changes.
   useEffect(() => {
@@ -65,7 +75,7 @@ export function Header() {
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <header className="site-header">
+    <header className={cn("site-header", scrolled && "is-scrolled")}>
       <div className="container site-header__inner">
         <Link className="brand-logo" href="/" aria-label="Saleem Traders — home">
           <LogoMark />
@@ -100,7 +110,12 @@ export function Header() {
           </button>
           <Link className="icon-btn" href="/cart" aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}>
             <IconBag />
-            {hydrated && count > 0 && <span className="icon-btn__count">{count > 99 ? "99+" : count}</span>}
+            {hydrated && count > 0 && (
+              // key={count} re-mounts the badge, replaying the pop on every change
+              <span key={count} className="icon-btn__count">
+                {count > 99 ? "99+" : count}
+              </span>
+            )}
           </Link>
           <Link className="btn btn--navy site-header__cta" href="/quote">
             Request a quote <Arrow />

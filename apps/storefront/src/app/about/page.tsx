@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/layout/PageHero";
 import { IconDocument, IconTruck, IconUsers } from "@/components/ui/icons";
+import { reveal } from "@/lib/motion";
 
 export const metadata: Metadata = { title: "About us", description: "Tiles, sanitaryware and kitchen fittings, brought together in one place." };
 
@@ -31,15 +32,17 @@ export default function AboutPage() {
         secondary={{ label: "Browse products", href: "/products" }}
       />
       <section className="container section about">
-        <h2 className="center">A practical partner for your project</h2>
-        <div className="split">
+        <h2 className="center" {...reveal(0, "fade")}>
+          A practical partner for your project
+        </h2>
+        <div className="split" {...reveal(1, "up", 120)}>
           <p>Choosing the right tiles, sanitaryware, kitchen fittings and accessories is easier when you can see, compare and get straightforward advice.</p>
           <p>At Saleem Traders, we bring a wide range of trusted brands together, so you can compare finishes, dimensions and budgets in one place.</p>
         </div>
 
         <div className="about-values">
-          {VALUES.map(({ Icon, title, text }) => (
-            <div key={title}>
+          {VALUES.map(({ Icon, title, text }, index) => (
+            <div key={title} {...reveal(index, "up", 100)}>
               <div className="icon">
                 <Icon />
               </div>
@@ -50,9 +53,9 @@ export default function AboutPage() {
         </div>
 
         <div className="showcase-row">
-          <img src="/images/demo/tiles.jpg" alt="Tile display" loading="lazy" />
-          <img src="/images/demo/tap.jpg" alt="Kitchen mixer tap" loading="lazy" />
-          <img src="/images/demo/showroom.jpg" alt="Showroom interior" loading="lazy" />
+          <img src="/images/demo/tiles.jpg" alt="Tile display" loading="lazy" {...reveal(0, "scale", 90)} />
+          <img src="/images/demo/tap.jpg" alt="Kitchen mixer tap" loading="lazy" {...reveal(1, "scale", 90)} />
+          <img src="/images/demo/showroom.jpg" alt="Showroom interior" loading="lazy" {...reveal(2, "scale", 90)} />
         </div>
 
         <h2 className="center" style={{ marginTop: 48 }}>
@@ -60,7 +63,7 @@ export default function AboutPage() {
         </h2>
         <div className="process">
           {PROCESS.map(([title, text], i) => (
-            <div key={title}>
+            <div key={title} {...reveal(i, "up", 100)}>
               <span className="step-no">{i + 1}</span>
               <h3>{title}</h3>
               <p>{text}</p>
@@ -68,7 +71,7 @@ export default function AboutPage() {
           ))}
         </div>
 
-        <div className="panel cta-panel">
+        <div className="panel cta-panel" {...reveal(0, "up")}>
           <div>
             <h2>Find the right fit for your space</h2>
             <p className="muted">Talk to our team and get a quotation.</p>
