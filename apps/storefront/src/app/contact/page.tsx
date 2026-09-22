@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { IconChat, IconPhone, IconPin } from "@/components/ui/icons";
+import { reveal } from "@/lib/motion";
 import { STORE } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -41,7 +42,7 @@ export default function ContactPage() {
         <Link href="/">Home</Link> / Contact
       </nav>
       <div className="contact-layout">
-        <div>
+        <div {...reveal(0, "up")}>
           <h1>Let&apos;s talk about your space.</h1>
           <p className="muted lead">Whether you&apos;re planning a new space, need product advice or a custom quote — our team is here to help.</p>
           <div className="panel">
@@ -50,9 +51,9 @@ export default function ContactPage() {
           </div>
         </div>
         <div>
-          <img className="contact-photo" src="/images/demo/showroom.jpg" alt="Inside the Saleem Traders showroom" loading="lazy" />
-          {cards.map(({ Icon, title, text, cta, href, external }) => (
-            <div className="info-card" key={title}>
+          <img className="contact-photo" src="/images/demo/showroom.jpg" alt="Inside the Saleem Traders showroom" loading="lazy" {...reveal(0, "scale")} />
+          {cards.map(({ Icon, title, text, cta, href, external }, index) => (
+            <div className="info-card" key={title} {...reveal(index + 1, "up", 90)}>
               <div className="step-no" aria-hidden="true">
                 <Icon />
               </div>
@@ -68,10 +69,10 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <h2 className="faq-heading">Frequently asked questions</h2>
+      <h2 className="faq-heading" {...reveal(0, "fade")}>Frequently asked questions</h2>
       <div className="faq">
-        {FAQ.map(({ q, a }) => (
-          <details key={q}>
+        {FAQ.map(({ q, a }, index) => (
+          <details key={q} {...reveal(index, "up", 60)}>
             <summary>{q}</summary>
             <p>{a}</p>
           </details>

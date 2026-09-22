@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { products, projects } from "@/data/catalog";
 import { ProductGrid } from "@/components/products/ProductGrid";
+import { reveal } from "@/lib/motion";
 
 type Params = Promise<{ slug: string }>;
 
@@ -27,7 +28,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
         <Link href="/">Home</Link> / <Link href="/projects">Inspiration</Link> / <span aria-current="page">{p.title}</span>
       </nav>
       <div className="page-hero with-image">
-        <div>
+        <div {...reveal(0, "up")}>
           <span className="badge">{p.type}</span>
           <h1>{p.title}</h1>
           <p className="muted lead">{p.desc}</p>
@@ -40,7 +41,7 @@ export default async function ProjectPage({ params }: { params: Params }) {
             </Link>
           </div>
         </div>
-        <img src={p.image} alt={p.title} />
+        <img src={p.image} alt={p.title} {...reveal(1, "scale", 120)} />
       </div>
 
       {shop.length > 0 && (
@@ -59,8 +60,8 @@ export default async function ProjectPage({ params }: { params: Params }) {
         <div className="section" style={{ paddingBottom: 0 }}>
           <h2>More {p.type.toLowerCase()}</h2>
           <div className="masonry">
-            {others.map((o) => (
-              <Link key={o.slug} href={`/projects/${o.slug}`} className="project-card">
+            {others.map((o, index) => (
+              <Link key={o.slug} href={`/projects/${o.slug}`} className="project-card" {...reveal(index, "scale", 80)}>
                 <img src={o.image} alt={o.title} loading="lazy" />
                 <h3>
                   {o.title}

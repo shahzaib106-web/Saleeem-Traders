@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { brands, products } from "@/data/catalog";
 import { IconSearch } from "@/components/ui/icons";
+import { reveal } from "@/lib/motion";
 
 const RANGES = [
   { label: "All", test: () => true },
@@ -43,8 +44,8 @@ export function BrandDirectory() {
 
       {visible.length > 0 ? (
         <div className="grid brand-grid">
-          {visible.map((b) => (
-            <Link className="brand-card" href={`/brands/${b.slug}`} key={b.slug}>
+          {visible.map((b, index) => (
+            <Link className="brand-card" href={`/brands/${b.slug}`} key={b.slug} {...reveal(index, "up", 70)}>
               <img src={b.image} alt={b.name} loading="lazy" />
               <div>
                 <h3>{b.name}</h3>
