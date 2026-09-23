@@ -1,0 +1,5 @@
+{
+  "name": "Saleem Traders",
+  "description": "Tiles, sanitaryware, kitchen fittings and bathroom accessories thoughtfully selected for modern Pakistani homes and commercial projects.",
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

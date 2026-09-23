@@ -2,15 +2,20 @@
   "name": "saleeem-traders",
   "private": true,
   "version": "0.1.0",
-  "description": "Saleeem Traders commerce platform monorepo",
+  "description": "Saleem Traders commerce platform monorepo",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "lint": "turbo lint",
-    "typecheck": "turbo typecheck",
-    "dev:storefront": "pnpm --filter @saleeem/storefront dev",
-    "dev:admin": "pnpm --filter @saleeem/admin dev",
-    "dev:api": "pnpm --filter @saleeem/api start:dev"
+    "dev": "npm run dev --workspace=apps/storefront",
+    "build": "npm run build --workspace=apps/storefront",
+    "start": "npm run start --workspace=apps/storefront",
+    "lint": "npm run lint --workspace=apps/storefront",
+    "typecheck": "npm run typecheck --workspace=apps/storefront",
+    "dev:storefront": "npm run dev --workspace=apps/storefront",
+    "dev:admin": "npm run dev --workspace=apps/admin",
+    "dev:api": "npm run start:dev --workspace=apps/api"
   },
   "devDependencies": {
     "@types/node": "^22.7.4",
@@ -18,7 +23,6 @@
     "turbo": "^2.1.3",
     "typescript": "^5.6.2"
   },
-  "packageManager": "pnpm@9.12.0",
   "engines": {
     "node": "22.x"
   },
