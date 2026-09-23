@@ -80,9 +80,8 @@ export function Header() {
         <Link className="brand-logo" href="/" aria-label="Saleem Traders — home">
           <LogoMark />
           <span className="brand-logo__text">
-            SALEEM
-            <br />
-            TRADERS
+            <span className="brand-logo__name">SALEEM</span>
+            <span className="brand-logo__sub">TRADERS</span>
           </span>
         </Link>
 
@@ -97,10 +96,11 @@ export function Header() {
         <div className="site-header__actions">
           <button
             type="button"
-            className="icon-btn"
+            className="icon-btn site-header__search-btn"
             aria-label={searchOpen ? "Close search" : "Search products"}
             aria-expanded={searchOpen}
             aria-controls="site-search"
+            suppressHydrationWarning
             onClick={() => {
               setSearchOpen((v) => !v);
               setOpen(false);
@@ -108,7 +108,11 @@ export function Header() {
           >
             {searchOpen ? <IconClose /> : <IconSearch />}
           </button>
-          <Link className="icon-btn" href="/cart" aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}>
+          <Link
+            className="icon-btn site-header__cart-btn"
+            href="/cart"
+            aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}
+          >
             <IconBag />
             {hydrated && count > 0 && (
               // key={count} re-mounts the badge, replaying the pop on every change
@@ -126,6 +130,7 @@ export function Header() {
             aria-expanded={open}
             aria-controls="site-mobile-menu"
             aria-label={open ? "Close menu" : "Open menu"}
+            suppressHydrationWarning
             onClick={() => {
               setOpen((v) => !v);
               setSearchOpen(false);
@@ -137,7 +142,7 @@ export function Header() {
       </div>
 
       <div id="site-search" className={`site-search${searchOpen ? " open" : ""}`} hidden={!searchOpen}>
-        <form className="container site-search__form" role="search" onSubmit={submitSearch}>
+        <form className="container site-search__form" role="search" onSubmit={submitSearch} suppressHydrationWarning>
           <label className="sr-only" htmlFor="site-search-input">
             Search products
           </label>
@@ -150,25 +155,109 @@ export function Header() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             autoComplete="off"
+            suppressHydrationWarning
           />
-          <button className="btn btn--navy" type="submit">
+          <button className="btn btn--navy" type="submit" suppressHydrationWarning>
             Search
           </button>
         </form>
       </div>
 
       <div id="site-mobile-menu" className={`container site-header__mobile${open ? " open" : ""}`}>
-        {mobileLinks.map((link) => (
-          <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
-            {link.label}
+        {/* Search inside mobile menu */}
+        <form
+          className="site-header__mobile-search"
+          role="search"
+          onSubmit={(e) => {
+            submitSearch(e);
+            setOpen(false);
+          }}
+          suppressHydrationWarning
+        >
+          <div className="site-header__mobile-search-bar">
+            <span className="site-header__mobile-search-icon" aria-hidden="true">
+              <IconSearch />
+            </span>
+            <input
+              className="site-header__mobile-search-input"
+              type="search"
+              placeholder="Search tiles, basins, taps…"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              autoComplete="off"
+              spellCheck={false}
+              style={{ outline: "none", boxShadow: "none", border: "none" }}
+              suppressHydrationWarning
+            />
+            {query.length > 0 && (
+              <button
+                type="button"
+                className="site-header__mobile-search-clear"
+                aria-label="Clear search"
+                onClick={() => setQuery("")}
+                suppressHydrationWarning
+              >
+                <IconClose />
+              </button>
+            )}
+            <button
+              className="site-header__mobile-search-submit"
+              type="submit"
+              aria-label="Search"
+              suppressHydrationWarning
+            >
+              Search
+            </button>
+          </div>
+        </form>
+
+        {/* Navigation links inside mobile menu */}
+        <div className="site-header__mobile-nav">
+          {mobileLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              aria-current={isActive(link.href) ? "page" : undefined}
+              onClick={() => setOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Link
+            href="/quote"
+            aria-current={isActive("/quote") ? "page" : undefined}
+            onClick={() => setOpen(false)}
+          >
+            Request a quote
           </Link>
-        ))}
-        <Link href={isAuthenticated ? "/account" : "/login"} onClick={() => setOpen(false)}>
-          {isAuthenticated ? "My account" : "Sign in"}
-        </Link>
-        <Link className="btn btn--navy" href="/quote" onClick={() => setOpen(false)}>
-          Request a quote <Arrow />
-        </Link>
+        </div>
+
+        {/* Footer actions with account and Shopping Cart button in the last */}
+        <div className="site-header__mobile-footer">
+          <Link
+            className="site-header__mobile-account"
+            href={isAuthenticated ? "/account" : "/login"}
+            onClick={() => setOpen(false)}
+          >
+            {isAuthenticated ? "My account" : "Sign in / Register"}
+          </Link>
+
+          {/* Only button: shopping cart button in the last */}
+          <Link
+            className="btn btn--navy site-header__mobile-cart-btn"
+            href="/cart"
+            onClick={() => setOpen(false)}
+            aria-label={`Shopping cart, ${count} item${count === 1 ? "" : "s"}`}
+          >
+            <span className="site-header__mobile-cart-title">
+              <IconBag />
+              <span>Shopping Cart</span>
+            </span>
+            <span className="site-header__mobile-cart-badge">
+              {hydrated && count > 0 ? `${count} item${count === 1 ? "" : "s"}` : "0 items"}
+            </span>
+          </Link>
+        </div>
       </div>
     </header>
   );

@@ -115,13 +115,70 @@ export function IconYoutube({ className }: IconProps) {
 
 export function LogoMark({ className }: IconProps) {
   return (
-    <svg className={className} viewBox="0 0 48 48" aria-hidden="true">
-      <path d="M5 21 24 5.5 43 21" fill="none" stroke="#b08d5f" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M11 21.5h26V44H11z" fill="#16354e" />
-      <rect x="19.2" y="27" width="4.4" height="4.4" fill="#f6f3ec" />
-      <rect x="24.4" y="27" width="4.4" height="4.4" fill="#f6f3ec" />
-      <rect x="19.2" y="32.2" width="4.4" height="4.4" fill="#f6f3ec" />
-      <rect x="24.4" y="32.2" width="4.4" height="4.4" fill="#f6f3ec" />
+    <svg className={className} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="stLogoNavy" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#1e3d59" />
+          <stop offset="45%" stopColor="#132b40" />
+          <stop offset="100%" stopColor="#0a1824" />
+        </linearGradient>
+        <linearGradient id="stLogoGold" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#faecd1" />
+          <stop offset="30%" stopColor="#d8b26e" />
+          <stop offset="70%" stopColor="#ad823b" />
+          <stop offset="100%" stopColor="#e2c388" />
+        </linearGradient>
+        <linearGradient id="stLogoGoldLight" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" />
+          <stop offset="50%" stopColor="#f3dec2" />
+          <stop offset="100%" stopColor="#cda560" />
+        </linearGradient>
+        <linearGradient id="stLogoBevel" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.22" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0.28" />
+        </linearGradient>
+      </defs>
+
+      {/* Architectural ceramic tile badge */}
+      <rect x="2.5" y="2.5" width="43" height="43" rx="10" fill="url(#stLogoNavy)" />
+      <rect x="2.5" y="2.5" width="43" height="43" rx="10" fill="url(#stLogoBevel)" />
+      <rect x="3" y="3" width="42" height="42" rx="9.5" stroke="url(#stLogoGold)" strokeWidth="1.2" strokeOpacity="0.75" />
+
+      {/* Subtle diamond tile inlay grid representing precision ceramics */}
+      <rect
+        x="15"
+        y="15"
+        width="18"
+        height="18"
+        rx="3.5"
+        transform="rotate(45 24 24)"
+        fill="rgba(255,255,255,0.03)"
+        stroke="url(#stLogoGold)"
+        strokeWidth="0.8"
+        strokeDasharray="2.5 2"
+        opacity="0.5"
+      />
+
+      {/* Modern luxury "S" & "T" monogram mark */}
+      {/* T-horizontal crossbar anchor */}
+      <line x1="18" y1="12" x2="30" y2="12" stroke="url(#stLogoGoldLight)" strokeWidth="2" strokeLinecap="round" opacity="0.9" />
+
+      {/* Dynamic S curve with architectural taper */}
+      <path
+        d="M32.5 16.5C32.5 13.8 29.2 12 24 12C18.8 12 15.5 14.2 15.5 17.6C15.5 21.6 20.2 22.8 24.2 23.8C28.5 24.9 32.5 26.2 32.5 30.4C32.5 34.2 29 36.5 24 36.5C18.5 36.5 15.2 34 15.2 30.5"
+        fill="none"
+        stroke="url(#stLogoGold)"
+        strokeWidth="3.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+
+      {/* Central ceramic facet spark reflecting polished marble/tiles */}
+      <path
+        d="M38 10L38.8 7.5L39.6 10L42.1 10.8L39.6 11.6L38.8 14.1L38 11.6L35.5 10.8Z"
+        fill="url(#stLogoGoldLight)"
+        opacity="0.95"
+      />
     </svg>
   );
 }

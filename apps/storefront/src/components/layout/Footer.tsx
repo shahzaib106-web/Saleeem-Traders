@@ -16,9 +16,8 @@ export function Footer() {
             <Link className="brand-logo" href="/" aria-label="Saleem Traders — home">
               <LogoMark />
               <span className="brand-logo__text">
-                SALEEM
-                <br />
-                TRADERS
+                <span className="brand-logo__name">SALEEM</span>
+                <span className="brand-logo__sub">TRADERS</span>
               </span>
             </Link>
             <p>Tiles, fittings &amp; finishes for every space.</p>

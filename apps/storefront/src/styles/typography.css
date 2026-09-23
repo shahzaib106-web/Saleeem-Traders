@@ -566,12 +566,30 @@ h4 {
    Header, nav & controls
    --------------------------------------------------------- */
 .brand-logo__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1;
+}
+
+.brand-logo__name {
   font-family: var(--font-serif);
-  font-size: 1.125rem;
-  font-weight: var(--fw-semibold);
-  letter-spacing: 0.1em;
-  line-height: 1.15;
+  font-size: 1.1875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
   color: var(--navy);
+}
+
+.brand-logo__sub {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  line-height: 1;
+  color: #b08d5f;
+  margin-top: 3.5px;
+  text-transform: uppercase;
 }
 
 .site-header__nav a {

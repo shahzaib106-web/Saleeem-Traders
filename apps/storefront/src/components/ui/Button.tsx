@@ -24,7 +24,7 @@ export function Button({ href, children, variant = "primary", className, type = 
     );
   }
   return (
-    <button className={classes} type={type} disabled={disabled} onClick={onClick} aria-label={rest["aria-label"]}>
+    <button className={classes} type={type} disabled={disabled} onClick={onClick} aria-label={rest["aria-label"]} suppressHydrationWarning>
       {children}
     </button>
   );

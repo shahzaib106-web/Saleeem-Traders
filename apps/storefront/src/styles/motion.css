@@ -235,11 +235,12 @@ html.js-motion [data-reveal].is-revealed {
   transition:
     width var(--dur-3) var(--ease-out),
     height var(--dur-3) var(--ease-out),
-    transform var(--dur-3) var(--ease-spring);
+    transform var(--dur-3) var(--ease-spring),
+    filter var(--dur-3) var(--ease-out);
 }
 
 .brand-logo:hover svg {
-  transform: rotate(-4deg);
+  transform: translateY(-1px) scale(1.03);
 }
 
 /* Underline sweep replaces the instant border-bottom swap. The border is
